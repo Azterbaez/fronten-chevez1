@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#750d32">
+  <title>Chevez Mobile BI</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #292421;
+      background: #f5f2ef;
+      font-synthesis: none;
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; min-width: 320px; }
+    header { padding: 28px max(20px, calc((100% - 980px) / 2)); color: white; background: #750d32; }
+    header p { margin: 7px 0 0; color: #f0dae2; font-size: 14px; }
+    h1 { margin: 0; font-size: 24px; letter-spacing: .03em; }
+    main { width: min(980px, 100%); margin: auto; padding: 24px 16px 48px; }
+    .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+    .toolbar p { margin: 0; color: #77716d; font-size: 13px; }
+    button { border: 0; border-radius: 5px; padding: 11px 15px; color: white; background: #750d32; font: inherit; font-weight: 700; cursor: pointer; }
+    button:disabled { opacity: .55; cursor: wait; }
+    #collections { display: grid; gap: 16px; }
+    section { overflow: hidden; border: 1px solid #e9e3de; border-radius: 8px; background: white; }
+    .section-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 15px 16px; border-bottom: 1px solid #e9e3de; }
+    h2 { margin: 0; font-size: 17px; }
+    .count { color: #77716d; font-size: 11px; font-weight: 800; }
+    ul { margin: 0; padding: 0; list-style: none; }
+    li { display: flex; align-items: center; gap: 12px; min-height: 66px; padding: 12px 16px; border-bottom: 1px solid #f0ece9; }
+    li:last-child { border-bottom: 0; }
+    li img { width: 44px; height: 44px; border-radius: 5px; object-fit: cover; background: #f5f2ef; }
+    .copy { min-width: 0; }
+    .name { margin: 0; overflow-wrap: anywhere; font-size: 14px; font-weight: 750; }
+    .details { margin: 4px 0 0; color: #77716d; font-size: 12px; overflow-wrap: anywhere; }
+    .empty, .error { padding: 18px 16px; color: #77716d; font-size: 13px; }
+    .error { color: #a63338; }
+    @media (min-width: 720px) { main { padding-top: 32px; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>CHEVEZ / MOBILE BI</h1>
+    <p>Gestión comercial · Productos, categorías, clientes y movimientos</p>
+  </header>
+  <main>
+    <div class="toolbar">
+      <p id="status" role="status">Conectando con el servidor…</p>
+      <button id="refresh" type="button">Actualizar</button>
+    </div>
+    <div id="collections"></div>
+  </main>
+  <script>
+    const API_URL = 'https://prueva-1-wuwk.onrender.com';
+    const modules = [
+      { key: 'productos', label: 'Productos', path: '/api/productos/productos' },
+      { key: 'categorias', label: 'Categorías', path: '/api/categorias/categorias' },
+      { key: 'clientes', label: 'Clientes', path: '/api/clientes/clientes' },
+      { key: 'pedidos', label: 'Pedidos', path: '/api/pedidos/pedidos' },
+      { key: 'creditos', label: 'Créditos', path: '/api/creditos/creditos' },
+    ];
+    const collectionRoot = document.getElementById('collections');
+    const status = document.getElementById('status');
+    const refreshButton = document.getElementById('refresh');
+
+    function makeElement(tag, className, text) {
+      const element = document.createElement(tag);
+      if (className) element.className = className;
+      if (text != null) element.textContent = text;
+      return element;
+    }
+
+    function recordDetails(record, moduleKey) {
+      if (moduleKey === 'productos') return `${record.descripcion || ''}${record.precio != null ? ` · $${record.precio}` : ''}${record.stock != null ? ` · ${record.stock} en inventario` : ''}`;
+      if (moduleKey === 'pedidos') return `${record.fecha || 'Sin fecha'} · Total: $${record.total ?? 0} · ${record.estado ? 'Completado' : 'En proceso'}`;
+      if (moduleKey === 'creditos') return `${record.fecha || 'Sin fecha'} · Pendiente: $${record.saldoPendiente ?? 0}`;
+      if (moduleKey === 'clientes') return `${record.telefono || 'Sin teléfono'} · ${record.direccion || 'Sin dirección'}`;
+      return record.descripcion || '';
+    }
+
+    function renderRecord(record, module) {
+      const row = document.createElement('li');
+      const imageUrl = record.imagenUrl || record.imagen;
+      if (typeof imageUrl === 'string' && /^https?:\/\//i.test(imageUrl)) {
+        const image = document.createElement('img');
+        image.src = imageUrl;
+        image.alt = '';
+        image.loading = 'lazy';
+        row.append(image);
+      }
+      const copy = makeElement('div', 'copy');
+      copy.append(makeElement('p', 'name', record.nombre || record.descripcion || `${module.label} · ${record.id || ''}`));
+      copy.append(makeElement('p', 'details', recordDetails(record, module.key)));
+      row.append(copy);
+      return row;
+    }
+
+    async function loadCollections() {
+      refreshButton.disabled = true;
+      status.textContent = 'Cargando colecciones…';
+      collectionRoot.replaceChildren();
+      const results = await Promise.allSettled(modules.map(async module => {
+        const response = await fetch(`${API_URL}${module.path}`);
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.mensaje || data.message || `Error ${response.status}`);
+        if (!Array.isArray(data)) throw new Error('El servidor no devolvió una lista.');
+        return data;
+      }));
+
+      let loaded = 0;
+      results.forEach((result, index) => {
+        const module = modules[index];
+        const section = document.createElement('section');
+        const heading = makeElement('div', 'section-heading');
+        heading.append(makeElement('h2', '', module.label));
+        heading.append(makeElement('span', 'count', result.status === 'fulfilled' ? `${result.value.length} REGISTROS` : 'NO DISPONIBLE'));
+        section.append(heading);
+
+        if (result.status === 'rejected') {
+          section.append(makeElement('p', 'error', `No se pudo cargar: ${result.reason.message}`));
+        } else {
+          loaded += 1;
+          if (!result.value.length) {
+            section.append(makeElement('p', 'empty', 'Todavía no hay registros.'));
+          } else {
+            const list = document.createElement('ul');
+            result.value.forEach(record => list.append(renderRecord(record, module)));
+            section.append(list);
+          }
+        }
+        collectionRoot.append(section);
+      });
+
+      status.textContent = loaded === modules.length
+        ? 'Colecciones actualizadas.'
+        : `Se cargaron ${loaded} de ${modules.length} colecciones.`;
+      refreshButton.disabled = false;
+    }
+
+    refreshButton.addEventListener('click', loadCollections);
+    loadCollections();
+  </script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Install Expo Image Picker",
+			"type": "shell",
+			"command": "C:\\Program Files\\nodejs\\npx.cmd",
+			"args": [
+				"expo",
+				"install",
+				"expo-image-picker"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		}
+	]
+}
