@@ -52,6 +52,28 @@ async function apiRequest(path, options = {}) {
   return data;
 }
 
+function multipartRequest(path, method, body) {
+  return new Promise((resolve, reject) => {
+    const request = new XMLHttpRequest();
+    request.open(method, `${API_URL}${path}`);
+    request.timeout = 60000;
+    request.onload = () => {
+      let data = {};
+      try { data = request.responseText ? JSON.parse(request.responseText) : {}; }
+      catch { data = { mensaje: request.responseText }; }
+
+      if (request.status >= 200 && request.status < 300) {
+        resolve(data);
+      } else {
+        reject(new Error(data.mensaje || data.message || `Error ${request.status}`));
+      }
+    };
+    request.onerror = () => reject(new Error('No se pudo conectar con el servidor.'));
+    request.ontimeout = () => reject(new Error('La subida de la imagen tardó demasiado.'));
+    request.send(body);
+  });
+}
+
 function createForm(entity, record, records) {
   if (record) {
     const form = { ...record, image: null };
@@ -206,7 +228,10 @@ export default function App() {
         body = JSON.stringify(payload);
       }
       const path = `${config.item}${record ? `/${recordId(record)}` : ''}`;
-      const result = await apiRequest(path, { method: record ? 'PUT' : 'POST', headers, body });
+      const method = record ? 'PUT' : 'POST';
+      const result = multipart
+        ? await multipartRequest(path, method, body)
+        : await apiRequest(path, { method, headers, body });
       setEditor(null); setNotice(result.mensaje || `${config.label} guardado correctamente.`);
       await refresh();
     } catch (saveError) { setError(saveError.message || 'No se pudo guardar el registro.'); }
@@ -225,6 +250,7 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.safe}>
+      
       <StatusBar style="dark" />
       <View style={styles.shell}>
         <ScrollView contentContainerStyle={styles.page} keyboardShouldPersistTaps="handled">
