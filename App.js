@@ -18,8 +18,8 @@ import {
 
 const API_URL = 'https://prueva-1-wuwk.onrender.com';
 const COLORS = {
-  ink: '#292421', muted: '#77716D', canvas: '#F5F2EF', paper: '#FFFFFF',
-  line: '#E9E3DE', wine: '#750D32', lime: '#D8E707', green: '#287755', red: '#A63338',
+  ink: '#0060f0', muted: '#77716D', canvas: '#F5F2EF', paper: '#FFFFFF',
+  line: '#0e0e0f', wine: '#0060f0', lime: '#e9f35cd2', green: '#287755', red: '#A63338',
 };
 const MODULES = {
   categorias: { label: 'Categorías', list: '/api/categorias/categorias', item: '/api/categorias/categoria' },
@@ -319,9 +319,69 @@ function Field({ field, value, onChange }) {
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: COLORS.canvas }, shell: { flex: 1 }, page: { paddingHorizontal: 20, paddingTop: 12, paddingBottom: 28 },
-  topbar: { minHeight: 52, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 22 }, brand: { color: COLORS.ink, fontSize: 15, fontWeight: '900' }, brandAccent: { color: COLORS.wine }, topCaption: { color: COLORS.muted, fontSize: 9, fontWeight: '700', marginTop: 3 }, refresh: { width: 42, height: 42, borderRadius: 21, backgroundColor: COLORS.paper, alignItems: 'center', justifyContent: 'center' }, refreshGlyph: { color: COLORS.wine, fontSize: 24 },
-  hero: { minHeight: 226, padding: 22, backgroundColor: COLORS.wine, borderRadius: 7, marginBottom: 25 }, eyebrow: { color: '#F4DDE5', fontSize: 10, fontWeight: '800' }, heroTitle: { color: COLORS.paper, fontSize: 32, lineHeight: 36, fontWeight: '800', marginTop: 20 }, heroCopy: { color: '#F0DAE2', fontSize: 13, marginTop: 8 }, heroFoot: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 20, paddingTop: 12, borderTopWidth: 1, borderColor: '#FFFFFF44' }, heroFootLabel: { color: '#F4DDE5', fontSize: 9, fontWeight: '800' }, heroFootValue: { color: COLORS.lime, fontSize: 22, fontWeight: '900' },
+  safe: { flex: 1,
+     backgroundColor: COLORS.canvas 
+    }, 
+
+  shell: { flex: 1 },
+
+  page: { paddingHorizontal: 20,
+     paddingTop: 12,
+    paddingBottom: 28 },
+
+  topbar: { minHeight: 52,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 22 
+      },
+       
+  brand: { color: COLORS.ink,
+     fontSize: 15,
+      fontWeight: '900' 
+    },
+
+  brandAccent: { color: COLORS.wine 
+
+  },
+  
+  topCaption: { color: COLORS.muted,
+     fontSize: 9,
+      fontWeight: '700',
+       marginTop: 3 
+      },
+
+ refresh: { width: 42,
+  height: 42,
+  borderRadius: 21,
+  backgroundColor: COLORS.paper,
+  alignItems: 'center',
+  justifyContent: 'center' 
+},
+
+ refreshGlyph: { color: COLORS.wine,
+   fontSize: 24 
+  },
+
+  hero: { minHeight: 226,
+     padding: 22,
+      backgroundColor: COLORS.wine,
+       borderRadius: 7,
+        marginBottom: 25 
+      },
+
+   eyebrow: { color: '#F4DDE5',
+    fontSize: 10,
+    fontWeight: '800' 
+    },
+
+  heroTitle: { color: COLORS.paper,
+     fontSize: 32,
+      lineHeight: 36,
+       fontWeight: '800',
+        marginTop: 20 
+      },
+         heroCopy: { color: '#F0DAE2', fontSize: 13, marginTop: 8 }, heroFoot: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 20, paddingTop: 12, borderTopWidth: 1, borderColor: '#FFFFFF44' }, heroFootLabel: { color: '#F4DDE5', fontSize: 9, fontWeight: '800' }, heroFootValue: { color: COLORS.lime, fontSize: 22, fontWeight: '900' },
   sectionTitleRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 8, marginBottom: 13 }, sectionTitle: { color: COLORS.ink, fontSize: 17, fontWeight: '800' }, actionText: { color: COLORS.wine, fontSize: 12, fontWeight: '700' }, stats: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', rowGap: 10, marginBottom: 20 }, stat: { width: '48.5%', minHeight: 108, padding: 14, borderRadius: 6, justifyContent: 'space-between' }, statDark: { backgroundColor: COLORS.ink }, statLime: { backgroundColor: COLORS.lime }, statPaper: { backgroundColor: COLORS.paper }, statLabel: { color: COLORS.muted, fontSize: 9, fontWeight: '800' }, statValue: { color: COLORS.ink, fontSize: 27, fontWeight: '800' }, statValueSmall: { color: COLORS.ink, fontSize: 18, fontWeight: '800' }, statNote: { color: COLORS.muted, fontSize: 11 }, lightText: { color: COLORS.paper },
   intro: { marginTop: 10, marginBottom: 20 }, kicker: { color: COLORS.wine, fontSize: 10, fontWeight: '800' }, title: { color: COLORS.ink, fontSize: 32, fontWeight: '800', marginTop: 6 }, subtitle: { color: COLORS.muted, fontSize: 13, marginTop: 6, lineHeight: 19 }, segment: { flexDirection: 'row', padding: 4, borderRadius: 6, backgroundColor: '#EAE4DF', marginBottom: 14 }, segmentOption: { flex: 1, minHeight: 40, justifyContent: 'center', alignItems: 'center', borderRadius: 4 }, segmentActive: { backgroundColor: COLORS.paper }, segmentText: { color: COLORS.muted, fontSize: 12, fontWeight: '700' }, segmentTextActive: { color: COLORS.ink }, search: { height: 46, backgroundColor: COLORS.paper, borderRadius: 5, borderWidth: 1, borderColor: COLORS.line, paddingHorizontal: 14, color: COLORS.ink, marginBottom: 10 }, actionRow: { minHeight: 48, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 7, gap: 8 }, count: { color: COLORS.muted, fontSize: 10, fontWeight: '800' },
   button: { minHeight: 42, paddingHorizontal: 14, alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: COLORS.wine, marginBottom: 9 }, buttonText: { color: COLORS.paper, fontSize: 12, fontWeight: '800' }, buttonQuiet: { backgroundColor: COLORS.paper, borderWidth: 1, borderColor: COLORS.line }, buttonQuietText: { color: COLORS.ink }, disabled: { opacity: 0.55 }, pressed: { opacity: 0.82 }, recordRow: { minHeight: 76, flexDirection: 'row', alignItems: 'center', backgroundColor: COLORS.paper, padding: 11, borderBottomWidth: 1, borderBottomColor: COLORS.line }, recordImage: { width: 52, height: 52, borderRadius: 4, marginRight: 12, backgroundColor: COLORS.canvas }, recordCopy: { flex: 1, paddingRight: 8 }, recordName: { color: COLORS.ink, fontSize: 14, fontWeight: '800' }, recordDetail: { color: COLORS.muted, fontSize: 11, marginTop: 5, lineHeight: 15 }, editButton: { padding: 8 }, editText: { color: COLORS.wine, fontSize: 11, fontWeight: '800' }, loader: { padding: 30 }, empty: { alignItems: 'center', paddingVertical: 30, paddingHorizontal: 22, backgroundColor: COLORS.paper, borderRadius: 6 }, emptyMark: { color: COLORS.wine, fontSize: 27, fontWeight: '800' }, emptyTitle: { color: COLORS.ink, fontSize: 14, fontWeight: '800' }, emptyText: { color: COLORS.muted, fontSize: 12, marginTop: 5, textAlign: 'center' },
