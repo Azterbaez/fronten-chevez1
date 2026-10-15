@@ -12,6 +12,24 @@
 			],
 			"isBackground": false,
 			"problemMatcher": []
+		},
+		{
+			"label": "Install Expo Navigation",
+			"type": "shell",
+			"command": "C:\\Program Files\\nodejs\\npx.cmd",
+			"args": [
+				"expo",
+				"install",
+				"expo-router",
+				"react-native-safe-area-context",
+				"react-native-screens",
+				"expo-linking",
+				"expo-constants",
+				"react-native-reanimated",
+				"react-native-worklets",
+				"react-native-gesture-handler"
+			],
+			"isBackground": false
 		}
 	]
 }

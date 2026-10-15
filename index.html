@@ -3,56 +3,191 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#750d32">
+  <meta name="theme-color" content="#221d1d">
   <title>Chevez Mobile BI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
       color-scheme: light;
-      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: "DM Sans", sans-serif;
       color: #292421;
       background: #f5f2ef;
       font-synthesis: none;
+      --ink: #292421;
+      --muted: #77716d;
+      --canvas: #f5f2ef;
+      --paper: #fff;
+      --line: #e9e3de;
+      --wine: #750d32;
+      --lime: #d8e707;
+      --green: #287755;
+      --red: #a63338;
     }
-
     * { box-sizing: border-box; }
-    body { margin: 0; min-width: 320px; }
-    header { padding: 28px max(20px, calc((100% - 980px) / 2)); color: white; background: #750d32; }
-    header p { margin: 7px 0 0; color: #f0dae2; font-size: 14px; }
-    h1 { margin: 0; font-size: 24px; letter-spacing: .03em; }
-    main { width: min(980px, 100%); margin: auto; padding: 24px 16px 48px; }
-    .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
-    .toolbar p { margin: 0; color: #77716d; font-size: 13px; }
-    button { border: 0; border-radius: 5px; padding: 11px 15px; color: white; background: #750d32; font: inherit; font-weight: 700; cursor: pointer; }
-    button:disabled { opacity: .55; cursor: wait; }
-    #collections { display: grid; gap: 16px; }
-    section { overflow: hidden; border: 1px solid #e9e3de; border-radius: 8px; background: white; }
-    .section-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 15px 16px; border-bottom: 1px solid #e9e3de; }
-    h2 { margin: 0; font-size: 17px; }
-    .count { color: #77716d; font-size: 11px; font-weight: 800; }
-    ul { margin: 0; padding: 0; list-style: none; }
-    li { display: flex; align-items: center; gap: 12px; min-height: 66px; padding: 12px 16px; border-bottom: 1px solid #f0ece9; }
-    li:last-child { border-bottom: 0; }
-    li img { width: 44px; height: 44px; border-radius: 5px; object-fit: cover; background: #f5f2ef; }
-    .copy { min-width: 0; }
-    .name { margin: 0; overflow-wrap: anywhere; font-size: 14px; font-weight: 750; }
-    .details { margin: 4px 0 0; color: #77716d; font-size: 12px; overflow-wrap: anywhere; }
-    .empty, .error { padding: 18px 16px; color: #77716d; font-size: 13px; }
-    .error { color: #a63338; }
-    @media (min-width: 720px) { main { padding-top: 32px; } }
+    body { min-width: 320px; min-height: 100vh; margin: 0; }
+    button { font: inherit; cursor: pointer; }
+    .app { min-height: 100vh; }
+    .sidebar { position: fixed; inset: 0 auto 0 0; z-index: 20; display: flex; width: 244px; flex-direction: column; padding: 27px 18px 18px; color: #fff; background: var(--ink); }
+    .brand { padding: 0 10px 29px; border-bottom: 1px solid #ffffff20; }
+    .brand-name { margin: 0; font-family: Manrope, sans-serif; font-size: 16px; font-weight: 800; }
+    .brand-name span { color: var(--lime); }
+    .brand-caption { margin: 5px 0 0; color: #c7bfbb; font-size: 10px; font-weight: 700; letter-spacing: .08em; }
+    .nav-label { margin: 27px 10px 10px; color: #a69e99; font-size: 9px; font-weight: 800; letter-spacing: .12em; }
+    .nav-list { display: grid; gap: 5px; }
+    .nav-item { display: flex; min-height: 45px; align-items: center; gap: 12px; padding: 0 11px; border: 0; border-radius: 5px; color: #d6cfcb; background: transparent; text-align: left; font-size: 13px; font-weight: 600; }
+    .nav-item:hover { background: #ffffff0d; color: #fff; }
+    .nav-item.active { color: var(--ink); background: var(--lime); }
+    .nav-icon { width: 20px; font-size: 16px; text-align: center; }
+    .sidebar-foot { margin-top: auto; padding: 14px 10px 0; border-top: 1px solid #ffffff20; color: #c7bfbb; font-size: 10px; }
+    .sidebar-foot strong { display: block; margin-bottom: 4px; color: #fff; font-size: 12px; }
+    .workspace { min-height: 100vh; margin-left: 244px; }
+    .topbar { position: sticky; top: 0; z-index: 10; display: flex; min-height: 68px; align-items: center; justify-content: space-between; gap: 16px; padding: 0 34px; border-bottom: 1px solid var(--line); background: #f5f2eff2; backdrop-filter: blur(12px); }
+    .breadcrumb { display: flex; align-items: center; gap: 9px; color: var(--muted); font-size: 12px; }
+    .breadcrumb strong { color: var(--ink); font-weight: 700; }
+    .top-actions { display: flex; align-items: center; gap: 12px; }
+    .connection { display: flex; align-items: center; gap: 7px; color: var(--muted); font-size: 11px; }
+    .connection::before { width: 7px; height: 7px; border-radius: 50%; background: #b7b0aa; content: ""; }
+    .connection.online::before { background: var(--green); }
+    .icon-button { display: grid; width: 38px; height: 38px; place-items: center; border: 1px solid var(--line); border-radius: 5px; color: var(--ink); background: var(--paper); font-size: 18px; }
+    .icon-button:hover { border-color: var(--wine); color: var(--wine); }
+    .menu-button { display: none; }
+    main { width: min(1180px, 100%); margin: 0 auto; padding: 30px 34px 70px; }
+    .notice { margin: 0 0 17px; padding: 11px 14px; border-radius: 5px; color: var(--red); background: #f8e9e8; font-size: 12px; }
+    .notice:empty { display: none; }
+    .eyebrow { margin: 0 0 7px; color: var(--wine); font-size: 10px; font-weight: 800; letter-spacing: .1em; }
+    h1, h2, p { overflow-wrap: anywhere; }
+    h1 { margin: 0; font-family: Manrope, sans-serif; font-size: 32px; font-weight: 800; }
+    .page-subtitle { margin: 7px 0 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
+    .page-heading { display: flex; align-items: end; justify-content: space-between; gap: 18px; margin-bottom: 24px; }
+    .hero { position: relative; display: flex; min-height: 246px; align-items: end; justify-content: space-between; gap: 20px; overflow: hidden; margin-bottom: 30px; padding: 27px 30px; border-radius: 6px; color: #fff; background: var(--wine); }
+    .hero::after { position: absolute; top: -76px; right: 8%; width: 300px; height: 300px; border: 1px solid #ffffff28; border-radius: 50%; box-shadow: 0 0 0 32px #ffffff0b, 0 0 0 66px #ffffff08; content: ""; }
+    .hero-copy { position: relative; z-index: 1; max-width: 500px; }
+    .hero .eyebrow { color: #f3d6e1; }
+    .hero h1 { max-width: 460px; font-size: 37px; line-height: 1.14; }
+    .hero p { max-width: 390px; margin: 10px 0 0; color: #f0dae2; font-size: 13px; line-height: 1.6; }
+    .hero-stat { position: relative; z-index: 1; min-width: 165px; padding-left: 20px; border-left: 1px solid #ffffff52; }
+    .hero-stat span { display: block; color: #f0dae2; font-size: 9px; font-weight: 800; letter-spacing: .08em; }
+    .hero-stat strong { display: block; margin-top: 7px; color: var(--lime); font-family: Manrope, sans-serif; font-size: 32px; }
+    .section-title { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 27px 0 14px; }
+    .section-title h2 { margin: 0; font-family: Manrope, sans-serif; font-size: 17px; }
+    .text-button { padding: 6px 0; border: 0; color: var(--wine); background: transparent; font-size: 12px; font-weight: 700; }
+    .text-button:hover { text-decoration: underline; }
+    .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 11px; }
+    .stat { min-height: 116px; padding: 16px; border-radius: 5px; background: var(--paper); }
+    .stat.dark { color: #fff; background: var(--ink); }
+    .stat.lime { background: var(--lime); }
+    .stat-label { margin: 0; color: var(--muted); font-size: 9px; font-weight: 800; letter-spacing: .06em; }
+    .stat.dark .stat-label { color: #d4ccca; }
+    .stat-value { margin: 10px 0 4px; font-family: Manrope, sans-serif; font-size: 26px; font-weight: 800; }
+    .stat-note { margin: 0; color: var(--muted); font-size: 10px; }
+    .stat.dark .stat-note { color: #d4ccca; }
+    .toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin: 22px 0 14px; }
+    .toolbar p { margin: 0; color: var(--muted); font-size: 11px; font-weight: 800; }
+    .toolbar-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; }
+    .search { width: min(280px, 100%); height: 40px; padding: 0 12px; border: 1px solid var(--line); border-radius: 5px; outline: none; color: var(--ink); background: var(--paper); font: inherit; font-size: 12px; }
+    .search:focus { border-color: var(--wine); }
+    .segments { display: flex; gap: 3px; padding: 3px; border-radius: 5px; background: #eae4df; }
+    .segment { min-height: 34px; padding: 0 13px; border: 0; border-radius: 3px; color: var(--muted); background: transparent; font-size: 11px; font-weight: 700; }
+    .segment.active { color: var(--ink); background: var(--paper); }
+    .primary-button { min-height: 40px; padding: 0 15px; border: 0; border-radius: 4px; color: #fff; background: var(--wine); font-size: 11px; font-weight: 800; }
+    .primary-button:disabled { opacity: .55; cursor: wait; }
+    .catalog-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 15px; }
+    .catalog-card { min-width: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 5px; background: var(--paper); cursor: pointer; transition: transform .18s ease, box-shadow .18s ease; animation: rise .28s both; }
+    .catalog-card:hover { transform: translateY(-3px); box-shadow: 0 9px 25px #29242116; }
+    .catalog-image-wrap { position: relative; height: 205px; overflow: hidden; background: #e7e1dc; }
+    .catalog-image { width: 100%; height: 100%; object-fit: cover; transition: transform .3s ease; }
+    .catalog-card:hover .catalog-image { transform: scale(1.035); }
+    .image-placeholder { display: grid; width: 100%; height: 100%; place-items: center; color: #a19790; background: linear-gradient(145deg, #ede8e3, #ded7d1); font-size: 11px; font-weight: 700; }
+    .stock-badge { position: absolute; right: 10px; bottom: 10px; padding: 6px 9px; border-radius: 3px; color: var(--ink); background: var(--lime); font-size: 9px; font-weight: 800; }
+    .catalog-copy { padding: 14px 15px 16px; }
+    .catalog-kicker { margin: 0 0 5px; color: var(--wine); font-size: 9px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    .catalog-name { margin: 0; font-family: Manrope, sans-serif; font-size: 15px; font-weight: 800; }
+    .catalog-description { display: -webkit-box; min-height: 34px; overflow: hidden; margin: 6px 0 12px; color: var(--muted); font-size: 11px; line-height: 1.55; line-clamp: 2; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+    .catalog-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-top: 10px; border-top: 1px solid var(--line); }
+    .catalog-price { color: var(--ink); font-family: Manrope, sans-serif; font-size: 16px; font-weight: 800; }
+    .catalog-link { color: var(--wine); font-size: 10px; font-weight: 800; }
+    .record-list { display: grid; gap: 8px; }
+    .record-row { display: flex; min-height: 72px; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 5px; background: var(--paper); }
+    .record-mark { display: grid; width: 38px; height: 38px; flex: 0 0 38px; place-items: center; border-radius: 4px; color: var(--wine); background: #f5e9ee; font-size: 15px; font-weight: 800; }
+    .record-copy { min-width: 0; flex: 1; }
+    .record-name { margin: 0; font-size: 13px; font-weight: 800; }
+    .record-detail { margin: 4px 0 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
+    .detail-layout { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(240px, .75fr); gap: 24px; align-items: start; }
+    .detail-image { width: 100%; max-height: 510px; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 5px; background: #e7e1dc; }
+    .detail-panel { padding: 21px; border: 1px solid var(--line); border-radius: 5px; background: var(--paper); }
+    .detail-panel h2 { margin: 5px 0 10px; font-family: Manrope, sans-serif; font-size: 23px; }
+    .detail-description { color: var(--muted); font-size: 12px; line-height: 1.7; }
+    .detail-price { margin: 17px 0; color: var(--wine); font-family: Manrope, sans-serif; font-size: 28px; font-weight: 800; }
+    .detail-facts { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-top: 18px; }
+    .fact { padding: 12px; border-radius: 4px; background: var(--canvas); }
+    .fact span { display: block; color: var(--muted); font-size: 9px; font-weight: 800; }
+    .fact strong { display: block; margin-top: 5px; font-size: 12px; }
+    .empty, .loading { padding: 42px 20px; border: 1px dashed #d5cdc7; border-radius: 5px; color: var(--muted); background: #ffffff80; text-align: center; font-size: 12px; }
+    .mobile-tabs { display: none; }
+    .drawer-scrim { display: none; }
+    @keyframes rise { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 1050px) { .catalog-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 700px) {
+      .sidebar { width: min(288px, 84vw); transform: translateX(-102%); transition: transform .22s ease; box-shadow: 15px 0 45px #17131330; }
+      .sidebar.open { transform: translateX(0); }
+      .drawer-scrim.visible { position: fixed; inset: 0; z-index: 19; display: block; background: #17131380; }
+      .workspace { margin-left: 0; padding-bottom: 66px; }
+      .topbar { min-height: 59px; padding: 0 15px; }
+      .menu-button { display: grid; }
+      .breadcrumb { flex: 1; gap: 6px; font-size: 11px; }
+      .connection { display: none; }
+      main { padding: 24px 16px 38px; }
+      .hero { min-height: 222px; align-items: start; flex-direction: column; justify-content: space-between; padding: 23px; }
+      .hero h1 { max-width: 300px; font-size: 31px; }
+      .hero-stat { min-width: 0; padding: 9px 0 0; border-top: 1px solid #ffffff52; border-left: 0; }
+      .hero-stat strong { display: inline-block; margin-left: 9px; font-size: 22px; }
+      .stats { gap: 8px; }
+      .stat { min-height: 101px; padding: 12px; }
+      .stat-value { font-size: 22px; }
+      .page-heading { align-items: start; flex-direction: column; margin-bottom: 18px; }
+      h1 { font-size: 28px; }
+      .toolbar { align-items: stretch; flex-direction: column; }
+      .toolbar-controls { display: grid; grid-template-columns: minmax(0, 1fr) auto; }
+      .search { width: 100%; }
+      .catalog-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+      .catalog-image-wrap { height: 150px; }
+      .catalog-copy { padding: 11px; }
+      .catalog-name { font-size: 13px; }
+      .catalog-description { min-height: 32px; font-size: 10px; }
+      .catalog-price { font-size: 14px; }
+      .catalog-link { font-size: 9px; }
+      .detail-layout { grid-template-columns: 1fr; gap: 13px; }
+      .detail-image { aspect-ratio: 4 / 3; }
+      .mobile-tabs { position: fixed; inset: auto 0 0; z-index: 15; display: grid; min-height: 62px; grid-template-columns: repeat(5, minmax(0, 1fr)); padding: 5px 3px max(5px, env(safe-area-inset-bottom)); border-top: 1px solid var(--line); background: #fff; }
+      .mobile-tab { display: grid; align-content: center; justify-items: center; gap: 3px; border: 0; color: var(--muted); background: transparent; font-size: 9px; font-weight: 700; }
+      .mobile-tab span:first-child { font-size: 15px; }
+      .mobile-tab.active { color: var(--wine); }
+    }
+    @media (max-width: 380px) { .catalog-grid { grid-template-columns: 1fr; } .catalog-image-wrap { height: 205px; } .toolbar-controls { grid-template-columns: 1fr; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; } }
   </style>
 </head>
 <body>
-  <header>
-    <h1>CHEVEZ / MOBILE BI</h1>
-    <p>Gestión comercial · Productos, categorías, clientes y movimientos</p>
-  </header>
-  <main>
-    <div class="toolbar">
-      <p id="status" role="status">Conectando con el servidor…</p>
-      <button id="refresh" type="button">Actualizar</button>
-    </div>
-    <div id="collections"></div>
-  </main>
+  <div class="app">
+    <aside class="sidebar" id="drawer" aria-label="Navegación principal">
+      <div class="brand"><p class="brand-name">CHEVEZ <span>/</span> MOBILE BI</p><p class="brand-caption">GESTIÓN COMERCIAL</p></div>
+      <p class="nav-label">ESPACIO DE TRABAJO</p>
+      <nav class="nav-list" id="drawerNav"></nav>
+      <div class="sidebar-foot"><strong>Panel operativo</strong>Control de inventario y ventas</div>
+    </aside>
+    <button class="drawer-scrim" id="drawerScrim" aria-label="Cerrar menú"></button>
+    <section class="workspace">
+      <header class="topbar">
+        <button class="icon-button menu-button" id="menuButton" aria-label="Abrir menú" aria-expanded="false">☰</button>
+        <div class="breadcrumb"><span>Chevez</span><span>/</span><strong id="currentTitle">Inicio</strong></div>
+        <div class="top-actions"><span class="connection" id="connection">Conectando</span><button class="icon-button" id="refresh" type="button" aria-label="Actualizar datos" title="Actualizar">↻</button></div>
+      </header>
+      <main><div class="notice" id="notice" role="status"></div><div id="page" aria-live="polite"></div></main>
+    </section>
+    <nav class="mobile-tabs" id="mobileTabs" aria-label="Secciones principales"></nav>
+  </div>
   <script>
     const API_URL = 'https://prueva-1-wuwk.onrender.com';
     const modules = [
@@ -62,46 +197,215 @@
       { key: 'pedidos', label: 'Pedidos', path: '/api/pedidos/pedidos' },
       { key: 'creditos', label: 'Créditos', path: '/api/creditos/creditos' },
     ];
-    const collectionRoot = document.getElementById('collections');
-    const status = document.getElementById('status');
-    const refreshButton = document.getElementById('refresh');
-
-    function makeElement(tag, className, text) {
-      const element = document.createElement(tag);
-      if (className) element.className = className;
-      if (text != null) element.textContent = text;
-      return element;
+    const sections = [
+      { id: 'home', label: 'Inicio', icon: '⌂' },
+      { id: 'catalog', label: 'Catálogo', icon: '▦' },
+      { id: 'orders', label: 'Pedidos', icon: '↗' },
+      { id: 'history', label: 'Historial', icon: '◷' },
+      { id: 'clients', label: 'Clientes', icon: '◎' },
+    ];
+    function routeStackFromLocation() {
+      const [screen, encodedId] = location.hash.slice(1).split('/');
+      if (screen === 'detail' && encodedId) return [{ screen: 'catalog' }, { screen: 'detail', id: decodeURIComponent(encodedId) }];
+      if (sections.some(section => section.id === screen)) return [{ screen }];
+      return [{ screen: 'home' }];
     }
-
-    function recordDetails(record, moduleKey) {
-      if (moduleKey === 'productos') return `${record.descripcion || ''}${record.precio != null ? ` · $${record.precio}` : ''}${record.stock != null ? ` · ${record.stock} en inventario` : ''}`;
-      if (moduleKey === 'pedidos') return `${record.fecha || 'Sin fecha'} · Total: $${record.total ?? 0} · ${record.estado ? 'Completado' : 'En proceso'}`;
-      if (moduleKey === 'creditos') return `${record.fecha || 'Sin fecha'} · Pendiente: $${record.saldoPendiente ?? 0}`;
-      if (moduleKey === 'clientes') return `${record.telefono || 'Sin teléfono'} · ${record.direccion || 'Sin dirección'}`;
-      return record.descripcion || '';
+    const page = document.getElementById('page');
+    const notice = document.getElementById('notice');
+    const drawer = document.getElementById('drawer');
+    const drawerScrim = document.getElementById('drawerScrim');
+    const connection = document.getElementById('connection');
+    const state = { records: Object.fromEntries(modules.map(module => [module.key, []])), stack: routeStackFromLocation(), catalogKind: 'productos', historyKind: 'pedidos', search: '', loading: false };
+    const current = () => state.stack[state.stack.length - 1];
+    const recordId = record => String(record?.id || record?._id || '');
+    const money = value => new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN', maximumFractionDigits: 0 }).format(Number(value) || 0);
+    const formatDate = value => {
+      const date = value && typeof value === 'object' ? value.fecha || value.$date || value.toDate?.() : value;
+      if (!date) return 'Sin fecha';
+      const parsed = new Date(date);
+      return Number.isNaN(parsed.getTime()) ? String(date) : new Intl.DateTimeFormat('es-MX', { dateStyle: 'medium' }).format(parsed);
+    };
+    const make = (tag, className, text) => {
+      const node = document.createElement(tag);
+      if (className) node.className = className;
+      if (text != null) node.textContent = text;
+      return node;
+    };
+    const validImage = value => typeof value === 'string' && /^https?:\/\//i.test(value);
+    function setRoute(screen, data = {}) {
+      state.stack = [{ screen, ...data }];
+      state.search = '';
+      notice.textContent = '';
+      closeDrawer();
+      render();
+      history.replaceState({ app: true }, '', screen === 'home' ? location.pathname : `#${screen}`);
     }
-
-    function renderRecord(record, module) {
-      const row = document.createElement('li');
-      const imageUrl = record.imagenUrl || record.imagen;
-      if (typeof imageUrl === 'string' && /^https?:\/\//i.test(imageUrl)) {
-        const image = document.createElement('img');
-        image.src = imageUrl;
-        image.alt = '';
-        image.loading = 'lazy';
-        row.append(image);
-      }
-      const copy = makeElement('div', 'copy');
-      copy.append(makeElement('p', 'name', record.nombre || record.descripcion || `${module.label} · ${record.id || ''}`));
-      copy.append(makeElement('p', 'details', recordDetails(record, module.key)));
-      row.append(copy);
-      return row;
+    function pushRoute(screen, data = {}) {
+      state.stack.push({ screen, ...data });
+      render();
+      history.pushState({ app: true }, '', `#${screen}/${encodeURIComponent(data.id || '')}`);
     }
-
+    function goBack() {
+      if (state.stack.length > 1) history.back();
+      else setRoute('catalog');
+    }
+    window.addEventListener('popstate', () => { state.stack = routeStackFromLocation(); render(); });
+    function navButton(section, mobile = false) {
+      const activeScreen = current().screen === 'detail' ? 'catalog' : current().screen;
+      const button = make('button', `${mobile ? 'mobile-tab' : 'nav-item'}${activeScreen === section.id ? ' active' : ''}`);
+      button.type = 'button';
+      button.setAttribute('aria-current', activeScreen === section.id ? 'page' : 'false');
+      if (mobile) {
+        button.append(make('span', '', section.icon), make('span', '', section.label));
+      } else button.append(make('span', 'nav-icon', section.icon), make('span', '', section.label));
+      button.addEventListener('click', () => setRoute(section.id));
+      return button;
+    }
+    function syncNavigation() {
+      document.getElementById('drawerNav').replaceChildren(...sections.map(section => navButton(section)));
+      document.getElementById('mobileTabs').replaceChildren(...sections.map(section => navButton(section, true)));
+      document.getElementById('currentTitle').textContent = current().screen === 'detail' ? 'Detalle de producto' : (sections.find(section => section.id === current().screen)?.label || 'Inicio');
+    }
+    function openDrawer() {
+      drawer.classList.add('open'); drawerScrim.classList.add('visible');
+      document.getElementById('menuButton').setAttribute('aria-expanded', 'true');
+    }
+    function closeDrawer() {
+      drawer.classList.remove('open'); drawerScrim.classList.remove('visible');
+      document.getElementById('menuButton').setAttribute('aria-expanded', 'false');
+    }
+    function pageHeading(eyebrow, title, subtitle, back = false) {
+      const wrap = make('div', 'page-heading');
+      const copy = make('div'); copy.append(make('p', 'eyebrow', eyebrow), make('h1', '', title), make('p', 'page-subtitle', subtitle));
+      wrap.append(copy);
+      if (back) { const button = make('button', 'text-button', '‹ Volver al catálogo'); button.addEventListener('click', goBack); wrap.append(button); }
+      return wrap;
+    }
+    function empty(text) { return make('div', 'empty', text); }
+    function createImage(url, alt, className) {
+      if (!validImage(url)) return make('div', 'image-placeholder', 'Imagen no disponible');
+      const image = make('img', className);
+      image.src = url; image.alt = alt || ''; image.loading = 'lazy';
+      image.addEventListener('error', () => image.replaceWith(make('div', 'image-placeholder', 'Imagen no disponible')), { once: true });
+      return image;
+    }
+    function productCard(record, index) {
+      const card = make('article', 'catalog-card'); card.style.animationDelay = `${Math.min(index, 8) * 35}ms`;
+      const imageWrap = make('div', 'catalog-image-wrap');
+      imageWrap.append(createImage(record.imagenUrl || record.imagen, record.nombre || 'Imagen del producto', 'catalog-image'));
+      const badge = make('span', 'stock-badge', `${record.stock ?? 0} disponibles`); imageWrap.append(badge);
+      const copy = make('div', 'catalog-copy');
+      copy.append(make('p', 'catalog-kicker', record.categoria?.nombre || record.categoriaRef?.nombre || 'Inventario'), make('h2', 'catalog-name', record.nombre || 'Producto sin nombre'), make('p', 'catalog-description', record.descripcion || 'Sin descripción disponible'));
+      const foot = make('div', 'catalog-foot'); foot.append(make('strong', 'catalog-price', money(record.precio)), make('span', 'catalog-link', 'Ver detalle →'));
+      copy.append(foot); card.append(imageWrap, copy);
+      card.tabIndex = 0; card.setAttribute('role', 'button'); card.setAttribute('aria-label', `Ver ${record.nombre || 'producto'}`);
+      card.addEventListener('click', () => pushRoute('detail', { id: recordId(record) }));
+      card.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); pushRoute('detail', { id: recordId(record) }); } });
+      return card;
+    }
+    function categoryCard(record, index) {
+      const card = make('article', 'catalog-card'); card.style.animationDelay = `${Math.min(index, 8) * 35}ms`;
+      const imageWrap = make('div', 'catalog-image-wrap'); imageWrap.append(createImage(record.imagenUrl || record.imagen, record.nombre || 'Imagen de categoría', 'catalog-image'));
+      const copy = make('div', 'catalog-copy');
+      copy.append(make('p', 'catalog-kicker', 'Categoría'), make('h2', 'catalog-name', record.nombre || 'Sin nombre'), make('p', 'catalog-description', record.descripcion || 'Agrupa productos de tu inventario.'));
+      card.append(imageWrap, copy); return card;
+    }
+    function filteredRecords(key) {
+      const needle = state.search.trim().toLocaleLowerCase();
+      return (state.records[key] || []).filter(record => !needle || JSON.stringify(record).toLocaleLowerCase().includes(needle));
+    }
+    function showCatalog() {
+      page.append(pageHeading('INVENTARIO', 'Catálogo', 'Productos y categorías en un mismo espacio.'));
+      const segment = make('div', 'segments');
+      [['productos', 'Productos'], ['categorias', 'Categorías']].forEach(([key, label]) => {
+        const button = make('button', `segment${state.catalogKind === key ? ' active' : ''}`, label);
+        button.addEventListener('click', () => { state.catalogKind = key; state.search = ''; render(); }); segment.append(button);
+      });
+      const toolbar = make('div', 'toolbar');
+      const records = filteredRecords(state.catalogKind);
+      toolbar.append(make('p', '', `${records.length} ${state.catalogKind === 'productos' ? 'PRODUCTOS' : 'CATEGORÍAS'}`));
+      const controls = make('div', 'toolbar-controls');
+      const search = make('input', 'search'); search.type = 'search'; search.placeholder = 'Buscar en el catálogo'; search.value = state.search; search.setAttribute('aria-label', 'Buscar en el catálogo');
+      search.addEventListener('input', event => { state.search = event.target.value; updateCatalogGrid(); });
+      controls.append(search, segment); toolbar.append(controls); page.append(toolbar);
+      const grid = make('div', 'catalog-grid'); grid.id = 'catalogGrid';
+      if (state.loading) grid.append(make('div', 'loading', 'Cargando catálogo…'));
+      else if (!records.length) grid.append(empty('No hay resultados para esta búsqueda.'));
+      else records.forEach((record, index) => grid.append(state.catalogKind === 'productos' ? productCard(record, index) : categoryCard(record, index)));
+      page.append(grid);
+    }
+    function updateCatalogGrid() {
+      const grid = document.getElementById('catalogGrid'); if (!grid) return;
+      const records = filteredRecords(state.catalogKind); grid.replaceChildren();
+      if (!records.length) grid.append(empty('No hay resultados para esta búsqueda.'));
+      else records.forEach((record, index) => grid.append(state.catalogKind === 'productos' ? productCard(record, index) : categoryCard(record, index)));
+      const count = document.querySelector('.toolbar > p');
+      if (count) count.textContent = `${records.length} ${state.catalogKind === 'productos' ? 'PRODUCTOS' : 'CATEGORÍAS'}`;
+    }
+    function recordRow(record, key) {
+      let detail = record.descripcion || '';
+      if (key === 'clientes') detail = `${record.telefono || 'Sin teléfono'} · ${record.direccion || 'Sin dirección'}`;
+      if (key === 'pedidos') detail = `${formatDate(record.fecha)} · ${money(record.total)} · ${record.estado ? 'Completado' : 'En proceso'}`;
+      if (key === 'creditos') detail = `${formatDate(record.fecha)} · Pendiente ${money(record.saldoPendiente)}`;
+      const row = make('article', 'record-row'); row.append(make('span', 'record-mark', key === 'clientes' ? '◎' : key === 'creditos' ? '$' : '↗'));
+      const copy = make('div', 'record-copy'); copy.append(make('p', 'record-name', record.nombre || record.descripcion || modules.find(module => module.key === key)?.label), make('p', 'record-detail', detail)); row.append(copy); return row;
+    }
+    function showRecords(title, subtitle, key) {
+      if (title) page.append(pageHeading(key.toUpperCase(), title, subtitle));
+      const toolbar = make('div', 'toolbar'); const records = filteredRecords(key);
+      toolbar.append(make('p', '', `${records.length} REGISTROS`));
+      const search = make('input', 'search'); search.type = 'search'; search.placeholder = `Buscar ${title.toLocaleLowerCase()}`; search.value = state.search; search.setAttribute('aria-label', `Buscar ${title.toLocaleLowerCase()}`);
+      search.addEventListener('input', event => { state.search = event.target.value; render(); const input = document.querySelector('.search'); input?.focus(); input?.setSelectionRange(state.search.length, state.search.length); });
+      toolbar.append(search); page.append(toolbar);
+      const list = make('div', 'record-list');
+      if (state.loading) list.append(make('div', 'loading', 'Cargando registros…'));
+      else if (!records.length) list.append(empty('Todavía no hay registros.'));
+      else records.forEach(record => list.append(recordRow(record, key)));
+      page.append(list);
+    }
+    function showHome() {
+      const hero = make('section', 'hero'); const copy = make('div', 'hero-copy');
+      copy.append(make('p', 'eyebrow', 'PANEL PRINCIPAL · EN LÍNEA'), make('h1', '', 'Tu negocio, en control.'), make('p', '', 'Inventario, clientes y operación diaria reunidos en un solo espacio.'));
+      const heroStat = make('div', 'hero-stat'); heroStat.append(make('span', '', 'PEDIDOS REGISTRADOS'), make('strong', '', String(state.records.pedidos.length).padStart(2, '0'))); hero.append(copy, heroStat); page.append(hero);
+      const stats = make('div', 'stats');
+      const activeCredit = state.records.creditos.filter(record => !record.estado).reduce((sum, record) => sum + Number(record.saldoPendiente || 0), 0);
+      [['PRODUCTOS', state.records.productos.length, 'En catálogo', 'dark'], ['CLIENTES', state.records.clientes.length, 'Registrados', 'lime'], ['PEDIDOS', state.records.pedidos.length, 'En historial', ''], ['CRÉDITO ACTIVO', money(activeCredit), 'Saldo pendiente', '']].forEach(([label, value, note, variant]) => {
+        const card = make('article', `stat ${variant}`); card.append(make('p', 'stat-label', label), make('p', 'stat-value', String(value)), make('p', 'stat-note', note)); stats.append(card);
+      }); page.append(stats);
+      const heading = make('div', 'section-title'); heading.append(make('h2', '', 'Productos recientes'));
+      const seeAll = make('button', 'text-button', 'Abrir catálogo →'); seeAll.addEventListener('click', () => setRoute('catalog')); heading.append(seeAll); page.append(heading);
+      const grid = make('div', 'catalog-grid');
+      if (state.loading) grid.append(make('div', 'loading', 'Cargando productos…'));
+      else if (!state.records.productos.length) grid.append(empty('Todavía no hay productos en catálogo.'));
+      else state.records.productos.slice(0, 3).forEach((record, index) => grid.append(productCard(record, index)));
+      page.append(grid);
+    }
+    function showDetail() {
+      const record = state.records.productos.find(item => recordId(item) === current().id);
+      if (!record) { page.append(pageHeading('INVENTARIO', 'Producto no disponible', 'El registro ya no está en el catálogo.', true)); return; }
+      page.append(pageHeading('CATÁLOGO / PRODUCTO', record.nombre || 'Producto', 'Ficha del inventario seleccionado.', true));
+      const layout = make('div', 'detail-layout'); layout.append(createImage(record.imagenUrl || record.imagen, record.nombre || 'Imagen del producto', 'detail-image'));
+      const panel = make('section', 'detail-panel'); panel.append(make('p', 'eyebrow', record.categoria?.nombre || record.categoriaRef?.nombre || 'INVENTARIO'), make('h2', '', record.nombre || 'Producto'), make('p', 'detail-description', record.descripcion || 'Sin descripción disponible.'), make('p', 'detail-price', money(record.precio)));
+      const facts = make('div', 'detail-facts'); [['EXISTENCIAS', String(record.stock ?? 0)], ['ESTADO', record.estado === false ? 'Inactivo' : 'Disponible']].forEach(([label, value]) => { const fact = make('div', 'fact'); fact.append(make('span', '', label), make('strong', '', value)); facts.append(fact); }); panel.append(facts); layout.append(panel); page.append(layout);
+    }
+    function render() {
+      syncNavigation(); page.replaceChildren();
+      const screen = current().screen;
+      if (screen === 'home') showHome();
+      else if (screen === 'catalog') showCatalog();
+      else if (screen === 'detail') showDetail();
+      else if (screen === 'orders') showRecords('Pedidos', 'Registra ventas y consulta su estado.', 'pedidos');
+      else if (screen === 'history') {
+        page.append(pageHeading('MOVIMIENTOS', 'Historial', 'Pedidos y créditos registrados.'));
+        const segments = make('div', 'segments'); [['pedidos', 'Pedidos'], ['creditos', 'Créditos']].forEach(([key, label]) => { const button = make('button', `segment${state.historyKind === key ? ' active' : ''}`, label); button.addEventListener('click', () => { state.historyKind = key; state.search = ''; render(); }); segments.append(button); });
+        page.append(segments); showRecords('', '', state.historyKind);
+      } else if (screen === 'clients') showRecords('Clientes', 'Contactos guardados en el negocio.', 'clientes');
+      else showHome();
+    }
     async function loadCollections() {
-      refreshButton.disabled = true;
-      status.textContent = 'Cargando colecciones…';
-      collectionRoot.replaceChildren();
+      if (state.loading) return;
+      state.loading = true; connection.classList.remove('online'); connection.textContent = 'Actualizando';
+      const refreshButton = document.getElementById('refresh'); refreshButton.disabled = true; notice.textContent = ''; render();
       const results = await Promise.allSettled(modules.map(async module => {
         const response = await fetch(`${API_URL}${module.path}`);
         const data = await response.json();
@@ -109,39 +413,23 @@
         if (!Array.isArray(data)) throw new Error('El servidor no devolvió una lista.');
         return data;
       }));
-
-      let loaded = 0;
+      const unavailable = [];
       results.forEach((result, index) => {
         const module = modules[index];
-        const section = document.createElement('section');
-        const heading = makeElement('div', 'section-heading');
-        heading.append(makeElement('h2', '', module.label));
-        heading.append(makeElement('span', 'count', result.status === 'fulfilled' ? `${result.value.length} REGISTROS` : 'NO DISPONIBLE'));
-        section.append(heading);
-
-        if (result.status === 'rejected') {
-          section.append(makeElement('p', 'error', `No se pudo cargar: ${result.reason.message}`));
-        } else {
-          loaded += 1;
-          if (!result.value.length) {
-            section.append(makeElement('p', 'empty', 'Todavía no hay registros.'));
-          } else {
-            const list = document.createElement('ul');
-            result.value.forEach(record => list.append(renderRecord(record, module)));
-            section.append(list);
-          }
-        }
-        collectionRoot.append(section);
+        if (result.status === 'fulfilled') state.records[module.key] = result.value;
+        else { state.records[module.key] = []; unavailable.push(module.label); }
       });
-
-      status.textContent = loaded === modules.length
-        ? 'Colecciones actualizadas.'
-        : `Se cargaron ${loaded} de ${modules.length} colecciones.`;
-      refreshButton.disabled = false;
+      state.loading = false; refreshButton.disabled = false;
+      const loaded = modules.length - unavailable.length;
+      connection.classList.toggle('online', loaded > 0); connection.textContent = loaded === modules.length ? 'Conectado' : `${loaded}/${modules.length} módulos`;
+      if (unavailable.length) notice.textContent = `No se pudieron cargar: ${unavailable.join(', ')}.`;
+      render();
     }
-
-    refreshButton.addEventListener('click', loadCollections);
-    loadCollections();
+    document.getElementById('menuButton').addEventListener('click', () => drawer.classList.contains('open') ? closeDrawer() : openDrawer());
+    drawerScrim.addEventListener('click', closeDrawer);
+    document.getElementById('refresh').addEventListener('click', loadCollections);
+    document.addEventListener('keydown', event => { if (event.key === 'Escape') closeDrawer(); });
+    render(); loadCollections();
   </script>
 </body>
 </html>
