@@ -52,10 +52,16 @@
     .connection.online::before { background: var(--green); }
     .icon-button { display: grid; width: 38px; height: 38px; place-items: center; border: 1px solid var(--line); border-radius: 5px; color: var(--ink); background: var(--paper); font-size: 18px; }
     .icon-button:hover { border-color: var(--wine); color: var(--wine); }
+    .cart-button { position: relative; }
+    .cart-badge { position: absolute; top: -5px; right: -5px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px; color: var(--ink); background: var(--lime); font-size: 9px; font-weight: 800; line-height: 18px; text-align: center; }
+    .cart-badge[hidden] { display: none; }
     .menu-button { display: none; }
     main { width: min(1180px, 100%); margin: 0 auto; padding: 30px 34px 70px; }
     .notice { margin: 0 0 17px; padding: 11px 14px; border-radius: 5px; color: var(--red); background: #f8e9e8; font-size: 12px; }
+    .notice.success { color: var(--green); background: #e6f2ea; }
     .notice:empty { display: none; }
+    .toast { position: fixed; bottom: calc(72px + env(safe-area-inset-bottom, 0px)); left: 50%; z-index: 30; max-width: min(340px, calc(100% - 32px)); padding: 12px 16px; border-radius: 6px; color: #fff; background: var(--ink); box-shadow: 0 12px 32px #29242130; font-size: 12px; font-weight: 600; transform: translate(-50%, 12px); opacity: 0; pointer-events: none; transition: opacity .2s ease, transform .2s ease; }
+    .toast.visible { opacity: 1; transform: translate(-50%, 0); }
     .eyebrow { margin: 0 0 7px; color: var(--wine); font-size: 10px; font-weight: 800; letter-spacing: .1em; }
     h1, h2, p { overflow-wrap: anywhere; }
     h1 { margin: 0; font-family: Manrope, sans-serif; font-size: 32px; font-weight: 800; }
@@ -108,6 +114,30 @@
     .catalog-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-top: 10px; border-top: 1px solid var(--line); }
     .catalog-price { color: var(--ink); font-family: Manrope, sans-serif; font-size: 16px; font-weight: 800; }
     .catalog-link { color: var(--wine); font-size: 10px; font-weight: 800; }
+    .cart-add-button { min-height: 32px; padding: 0 10px; border: 0; border-radius: 4px; color: #fff; background: var(--wine); font-size: 9px; font-weight: 800; white-space: nowrap; }
+    .cart-add-button:hover { filter: brightness(1.06); }
+    .cart-add-button:disabled { opacity: .5; cursor: not-allowed; }
+    .cart-layout { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(260px, .8fr); gap: 20px; align-items: start; }
+    .cart-list { display: grid; gap: 10px; }
+    .cart-item { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 14px; border: 1px solid var(--line); border-radius: 5px; background: var(--paper); }
+    .cart-item-name { margin: 0; font-size: 13px; font-weight: 800; }
+    .cart-item-meta { margin: 4px 0 0; color: var(--muted); font-size: 11px; }
+    .cart-item-controls { display: flex; align-items: center; gap: 8px; }
+    .qty-button { width: 32px; height: 32px; border: 1px solid var(--line); border-radius: 4px; color: var(--ink); background: var(--canvas); font-size: 16px; font-weight: 700; }
+    .qty-value { min-width: 22px; text-align: center; font-size: 13px; font-weight: 800; }
+    .cart-remove { padding: 6px 0; border: 0; color: var(--red); background: transparent; font-size: 10px; font-weight: 700; }
+    .checkout-panel { position: sticky; top: 84px; padding: 18px; border: 1px solid var(--line); border-radius: 6px; background: var(--paper); }
+    .checkout-panel h2 { margin: 0 0 12px; font-family: Manrope, sans-serif; font-size: 17px; }
+    .field-label { display: block; margin: 0 0 7px; font-size: 11px; font-weight: 800; }
+    .select-input { width: 100%; height: 42px; margin-bottom: 14px; padding: 0 11px; border: 1px solid var(--line); border-radius: 5px; color: var(--ink); background: var(--paper); font: inherit; font-size: 12px; }
+    .payment-toggle { display: flex; gap: 6px; margin-bottom: 16px; }
+    .payment-option { flex: 1; min-height: 38px; border: 1px solid var(--line); border-radius: 5px; color: var(--muted); background: var(--canvas); font-size: 11px; font-weight: 700; }
+    .payment-option.active { border-color: var(--wine); color: #fff; background: var(--wine); }
+    .checkout-total { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; padding: 14px; border-radius: 5px; color: #fff; background: var(--ink); }
+    .checkout-total span { font-size: 10px; font-weight: 800; letter-spacing: .06em; }
+    .checkout-total strong { color: var(--lime); font-family: Manrope, sans-serif; font-size: 22px; }
+    .secondary-button { min-height: 40px; padding: 0 15px; border: 1px solid var(--line); border-radius: 4px; color: var(--ink); background: var(--paper); font-size: 11px; font-weight: 800; }
+    .detail-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
     .record-list { display: grid; gap: 8px; }
     .record-row { display: flex; min-height: 72px; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 5px; background: var(--paper); }
     .record-mark { display: grid; width: 38px; height: 38px; flex: 0 0 38px; place-items: center; border-radius: 4px; color: var(--wine); background: #f5e9ee; font-size: 15px; font-weight: 800; }
@@ -160,7 +190,9 @@
       .catalog-link { font-size: 9px; }
       .detail-layout { grid-template-columns: 1fr; gap: 13px; }
       .detail-image { aspect-ratio: 4 / 3; }
-      .mobile-tabs { position: fixed; inset: auto 0 0; z-index: 15; display: grid; min-height: 62px; grid-template-columns: repeat(5, minmax(0, 1fr)); padding: 5px 3px max(5px, env(safe-area-inset-bottom)); border-top: 1px solid var(--line); background: #fff; }
+      .mobile-tabs { position: fixed; inset: auto 0 0; z-index: 15; display: grid; min-height: 62px; grid-template-columns: repeat(6, minmax(0, 1fr)); padding: 5px 3px max(5px, env(safe-area-inset-bottom)); border-top: 1px solid var(--line); background: #fff; }
+      .cart-layout { grid-template-columns: 1fr; }
+      .checkout-panel { position: static; }
       .mobile-tab { display: grid; align-content: center; justify-items: center; gap: 3px; border: 0; color: var(--muted); background: transparent; font-size: 9px; font-weight: 700; }
       .mobile-tab span:first-child { font-size: 15px; }
       .mobile-tab.active { color: var(--wine); }
@@ -182,11 +214,12 @@
       <header class="topbar">
         <button class="icon-button menu-button" id="menuButton" aria-label="Abrir menú" aria-expanded="false">☰</button>
         <div class="breadcrumb"><span>Chevez</span><span>/</span><strong id="currentTitle">Inicio</strong></div>
-        <div class="top-actions"><span class="connection" id="connection">Conectando</span><button class="icon-button" id="refresh" type="button" aria-label="Actualizar datos" title="Actualizar">↻</button></div>
+        <div class="top-actions"><span class="connection" id="connection">Conectando</span><button class="icon-button cart-button" id="cartButton" type="button" aria-label="Ver carrito" title="Carrito">🛒<span class="cart-badge" id="cartBadge" hidden>0</span></button><button class="icon-button" id="refresh" type="button" aria-label="Actualizar datos" title="Actualizar">↻</button></div>
       </header>
       <main><div class="notice" id="notice" role="status"></div><div id="page" aria-live="polite"></div></main>
     </section>
     <nav class="mobile-tabs" id="mobileTabs" aria-label="Secciones principales"></nav>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
   </div>
   <script>
     const API_URL = 'https://prueva-1-wuwk.onrender.com';
@@ -197,13 +230,16 @@
       { key: 'pedidos', label: 'Pedidos', path: '/api/pedidos/pedidos' },
       { key: 'creditos', label: 'Créditos', path: '/api/creditos/creditos' },
     ];
+    const CART_STORAGE_KEY = 'chevez-mobile-cart';
     const sections = [
       { id: 'home', label: 'Inicio', icon: '⌂' },
       { id: 'catalog', label: 'Catálogo', icon: '▦' },
+      { id: 'cart', label: 'Carrito', icon: '🛒' },
       { id: 'orders', label: 'Pedidos', icon: '↗' },
       { id: 'history', label: 'Historial', icon: '◷' },
       { id: 'clients', label: 'Clientes', icon: '◎' },
     ];
+    const today = () => new Date().toISOString().slice(0, 10);
     function routeStackFromLocation() {
       const [screen, encodedId] = location.hash.slice(1).split('/');
       if (screen === 'detail' && encodedId) return [{ screen: 'catalog' }, { screen: 'detail', id: decodeURIComponent(encodedId) }];
@@ -215,7 +251,26 @@
     const drawer = document.getElementById('drawer');
     const drawerScrim = document.getElementById('drawerScrim');
     const connection = document.getElementById('connection');
-    const state = { records: Object.fromEntries(modules.map(module => [module.key, []])), stack: routeStackFromLocation(), catalogKind: 'productos', historyKind: 'pedidos', search: '', loading: false };
+    function loadCartFromStorage() {
+      try {
+        const raw = localStorage.getItem(CART_STORAGE_KEY);
+        const parsed = raw ? JSON.parse(raw) : [];
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
+        return [];
+      }
+    }
+    const state = {
+      records: Object.fromEntries(modules.map(module => [module.key, []])),
+      stack: routeStackFromLocation(),
+      catalogKind: 'productos',
+      historyKind: 'pedidos',
+      search: '',
+      loading: false,
+      cart: loadCartFromStorage(),
+      checkout: { clienteRef: '', metodoPago: true, submitting: false },
+      toastTimer: null,
+    };
     const current = () => state.stack[state.stack.length - 1];
     const recordId = record => String(record?.id || record?._id || '');
     const money = value => new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN', maximumFractionDigits: 0 }).format(Number(value) || 0);
@@ -232,10 +287,147 @@
       return node;
     };
     const validImage = value => typeof value === 'string' && /^https?:\/\//i.test(value);
+    function setNotice(message, variant = 'error') {
+      notice.textContent = message || '';
+      notice.classList.toggle('success', variant === 'success');
+    }
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('visible');
+      clearTimeout(state.toastTimer);
+      state.toastTimer = setTimeout(() => toast.classList.remove('visible'), 2400);
+    }
+    function syncCartBadge() {
+      const count = state.cart.reduce((sum, item) => sum + (Number(item.cantidad) || 0), 0);
+      const badge = document.getElementById('cartBadge');
+      badge.textContent = count > 99 ? '99+' : String(count);
+      badge.hidden = count === 0;
+    }
+    function persistCart() {
+      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(state.cart));
+      syncCartBadge();
+    }
+    function cartLineTotal(item) {
+      return (Number(item.cantidad) || 0) * (Number(item.precio) || 0);
+    }
+    function cartGrandTotal() {
+      return state.cart.reduce((sum, item) => sum + cartLineTotal(item), 0);
+    }
+    function productById(id) {
+      return state.records.productos.find(item => recordId(item) === id);
+    }
+    function canAddProduct(record, extra = 1) {
+      if (record?.estado === false) return { ok: false, message: 'Este producto está inactivo.' };
+      const stock = Number(record?.stock);
+      if (!Number.isFinite(stock) || stock <= 0) return { ok: true };
+      const existing = state.cart.find(item => item.productoRef === recordId(record));
+      const nextQty = (existing?.cantidad || 0) + extra;
+      if (nextQty > stock) return { ok: false, message: `Solo hay ${stock} disponibles.` };
+      return { ok: true };
+    }
+    function addToCart(record, quantity = 1) {
+      const id = recordId(record);
+      const qty = Math.max(1, Number(quantity) || 1);
+      const check = canAddProduct(record, qty);
+      if (!check.ok) {
+        setNotice(check.message);
+        return;
+      }
+      const existing = state.cart.find(item => item.productoRef === id);
+      if (existing) {
+        existing.cantidad = Number(existing.cantidad) + qty;
+        existing.precio = Number(record.precio) || existing.precio;
+        existing.nombre = record.nombre || existing.nombre;
+      } else {
+        state.cart.push({
+          productoRef: id,
+          cantidad: qty,
+          precio: Number(record.precio) || 0,
+          nombre: record.nombre || 'Producto',
+        });
+      }
+      persistCart();
+      showToast(`${record.nombre || 'Producto'} agregado al carrito`);
+      setNotice('');
+    }
+    function setCartQuantity(productoRef, cantidad) {
+      const item = state.cart.find(entry => entry.productoRef === productoRef);
+      if (!item) return;
+      const product = productById(productoRef);
+      const qty = Math.max(1, Number(cantidad) || 1);
+      const stock = Number(product?.stock);
+      if (Number.isFinite(stock) && stock > 0 && qty > stock) {
+        setNotice(`Solo hay ${stock} disponibles.`);
+        return;
+      }
+      item.cantidad = qty;
+      if (product?.precio != null) item.precio = Number(product.precio);
+      persistCart();
+      setNotice('');
+      if (current().screen === 'cart') render();
+    }
+    function removeFromCart(productoRef) {
+      state.cart = state.cart.filter(item => item.productoRef !== productoRef);
+      persistCart();
+      if (current().screen === 'cart') render();
+    }
+    function clearCart() {
+      state.cart = [];
+      persistCart();
+    }
+    async function submitCartOrder() {
+      if (state.checkout.submitting) return;
+      if (!state.cart.length) {
+        setNotice('Agrega productos al carrito antes de confirmar.');
+        return;
+      }
+      if (!state.checkout.clienteRef) {
+        setNotice('Selecciona un cliente para registrar el pedido.');
+        return;
+      }
+      const detalles = state.cart.map(item => ({
+        productoRef: item.productoRef,
+        cantidad: Number(item.cantidad),
+        precio: Number(item.precio),
+        subtotal: cartLineTotal(item),
+      }));
+      const payload = {
+        clienteRef: state.checkout.clienteRef,
+        fecha: today(),
+        estado: false,
+        metodoPago: state.checkout.metodoPago,
+        total: cartGrandTotal(),
+        detalles,
+      };
+      state.checkout.submitting = true;
+      setNotice('');
+      render();
+      try {
+        const response = await fetch(`${API_URL}/api/pedidos/pedido`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.mensaje || data.message || `Error ${response.status}`);
+        clearCart();
+        state.checkout.clienteRef = state.records.clientes[0] ? recordId(state.records.clientes[0]) : '';
+        setNotice(data.mensaje || 'Pedido registrado correctamente.', 'success');
+        showToast('Pedido enviado');
+        await loadCollections();
+        setRoute('orders');
+      } catch (error) {
+        setNotice(error.message || 'No se pudo registrar el pedido.');
+      } finally {
+        state.checkout.submitting = false;
+        render();
+      }
+    }
     function setRoute(screen, data = {}) {
       state.stack = [{ screen, ...data }];
       state.search = '';
-      notice.textContent = '';
+      setNotice('');
       closeDrawer();
       render();
       history.replaceState({ app: true }, '', screen === 'home' ? location.pathname : `#${screen}`);
@@ -264,7 +456,8 @@
     function syncNavigation() {
       document.getElementById('drawerNav').replaceChildren(...sections.map(section => navButton(section)));
       document.getElementById('mobileTabs').replaceChildren(...sections.map(section => navButton(section, true)));
-      document.getElementById('currentTitle').textContent = current().screen === 'detail' ? 'Detalle de producto' : (sections.find(section => section.id === current().screen)?.label || 'Inicio');
+      const titles = { detail: 'Detalle de producto' };
+      document.getElementById('currentTitle').textContent = titles[current().screen] || (sections.find(section => section.id === current().screen)?.label || 'Inicio');
     }
     function openDrawer() {
       drawer.classList.add('open'); drawerScrim.classList.add('visible');
@@ -296,7 +489,12 @@
       const badge = make('span', 'stock-badge', `${record.stock ?? 0} disponibles`); imageWrap.append(badge);
       const copy = make('div', 'catalog-copy');
       copy.append(make('p', 'catalog-kicker', record.categoria?.nombre || record.categoriaRef?.nombre || 'Inventario'), make('h2', 'catalog-name', record.nombre || 'Producto sin nombre'), make('p', 'catalog-description', record.descripcion || 'Sin descripción disponible'));
-      const foot = make('div', 'catalog-foot'); foot.append(make('strong', 'catalog-price', money(record.precio)), make('span', 'catalog-link', 'Ver detalle →'));
+      const foot = make('div', 'catalog-foot');
+      const addButton = make('button', 'cart-add-button', '+ Carrito');
+      addButton.type = 'button';
+      addButton.disabled = record.estado === false;
+      addButton.addEventListener('click', event => { event.stopPropagation(); addToCart(record); });
+      foot.append(make('strong', 'catalog-price', money(record.precio)), addButton);
       copy.append(foot); card.append(imageWrap, copy);
       card.tabIndex = 0; card.setAttribute('role', 'button'); card.setAttribute('aria-label', `Ver ${record.nombre || 'producto'}`);
       card.addEventListener('click', () => pushRoute('detail', { id: recordId(record) }));
@@ -372,6 +570,16 @@
       [['PRODUCTOS', state.records.productos.length, 'En catálogo', 'dark'], ['CLIENTES', state.records.clientes.length, 'Registrados', 'lime'], ['PEDIDOS', state.records.pedidos.length, 'En historial', ''], ['CRÉDITO ACTIVO', money(activeCredit), 'Saldo pendiente', '']].forEach(([label, value, note, variant]) => {
         const card = make('article', `stat ${variant}`); card.append(make('p', 'stat-label', label), make('p', 'stat-value', String(value)), make('p', 'stat-note', note)); stats.append(card);
       }); page.append(stats);
+      const cartCount = state.cart.reduce((sum, item) => sum + (Number(item.cantidad) || 0), 0);
+      if (cartCount) {
+        const cartBanner = make('div', 'toolbar');
+        cartBanner.append(make('p', '', `${cartCount} PRODUCTO${cartCount === 1 ? '' : 'S'} EN TU CARRITO`));
+        const openCart = make('button', 'primary-button', 'Ver carrito');
+        openCart.type = 'button';
+        openCart.addEventListener('click', () => setRoute('cart'));
+        cartBanner.append(openCart);
+        page.append(cartBanner);
+      }
       const heading = make('div', 'section-title'); heading.append(make('h2', '', 'Productos recientes'));
       const seeAll = make('button', 'text-button', 'Abrir catálogo →'); seeAll.addEventListener('click', () => setRoute('catalog')); heading.append(seeAll); page.append(heading);
       const grid = make('div', 'catalog-grid');
@@ -386,13 +594,101 @@
       page.append(pageHeading('CATÁLOGO / PRODUCTO', record.nombre || 'Producto', 'Ficha del inventario seleccionado.', true));
       const layout = make('div', 'detail-layout'); layout.append(createImage(record.imagenUrl || record.imagen, record.nombre || 'Imagen del producto', 'detail-image'));
       const panel = make('section', 'detail-panel'); panel.append(make('p', 'eyebrow', record.categoria?.nombre || record.categoriaRef?.nombre || 'INVENTARIO'), make('h2', '', record.nombre || 'Producto'), make('p', 'detail-description', record.descripcion || 'Sin descripción disponible.'), make('p', 'detail-price', money(record.precio)));
-      const facts = make('div', 'detail-facts'); [['EXISTENCIAS', String(record.stock ?? 0)], ['ESTADO', record.estado === false ? 'Inactivo' : 'Disponible']].forEach(([label, value]) => { const fact = make('div', 'fact'); fact.append(make('span', '', label), make('strong', '', value)); facts.append(fact); }); panel.append(facts); layout.append(panel); page.append(layout);
+      const facts = make('div', 'detail-facts'); [['EXISTENCIAS', String(record.stock ?? 0)], ['ESTADO', record.estado === false ? 'Inactivo' : 'Disponible']].forEach(([label, value]) => { const fact = make('div', 'fact'); fact.append(make('span', '', label), make('strong', '', value)); facts.append(fact); }); panel.append(facts);
+      const actions = make('div', 'detail-actions');
+      const addButton = make('button', 'primary-button', 'Agregar al carrito');
+      addButton.type = 'button';
+      addButton.disabled = record.estado === false;
+      addButton.addEventListener('click', () => addToCart(record));
+      const viewCart = make('button', 'secondary-button', 'Ver carrito');
+      viewCart.type = 'button';
+      viewCart.addEventListener('click', () => setRoute('cart'));
+      actions.append(addButton, viewCart);
+      panel.append(actions);
+      layout.append(panel); page.append(layout);
+    }
+    function showCart() {
+      page.append(pageHeading('VENTAS', 'Carrito', 'Revisa productos y confirma el pedido con un cliente.'));
+      if (!state.cart.length) {
+        page.append(empty('Tu carrito está vacío. Explora el catálogo y agrega productos.'));
+        const browse = make('button', 'primary-button', 'Ir al catálogo');
+        browse.type = 'button';
+        browse.style.marginTop = '12px';
+        browse.addEventListener('click', () => setRoute('catalog'));
+        page.append(browse);
+        return;
+      }
+      const layout = make('div', 'cart-layout');
+      const list = make('div', 'cart-list');
+      state.cart.forEach(item => {
+        const product = productById(item.productoRef);
+        const row = make('article', 'cart-item');
+        const copy = make('div');
+        copy.append(make('p', 'cart-item-name', item.nombre || product?.nombre || 'Producto'), make('p', 'cart-item-meta', `${money(item.precio)} c/u · Subtotal ${money(cartLineTotal(item))}`));
+        const controls = make('div', 'cart-item-controls');
+        const minus = make('button', 'qty-button', '−');
+        minus.type = 'button';
+        minus.addEventListener('click', () => setCartQuantity(item.productoRef, Math.max(1, Number(item.cantidad) - 1)));
+        const qty = make('span', 'qty-value', String(item.cantidad));
+        const plus = make('button', 'qty-button', '+');
+        plus.type = 'button';
+        plus.addEventListener('click', () => setCartQuantity(item.productoRef, Number(item.cantidad) + 1));
+        const remove = make('button', 'cart-remove', 'Quitar');
+        remove.type = 'button';
+        remove.addEventListener('click', () => removeFromCart(item.productoRef));
+        controls.append(minus, qty, plus, remove);
+        row.append(copy, controls);
+        list.append(row);
+      });
+      const checkout = make('section', 'checkout-panel');
+      checkout.append(make('h2', '', 'Confirmar pedido'));
+      if (!state.records.clientes.length) {
+        checkout.append(make('p', 'page-subtitle', 'Registra al menos un cliente en el backend para poder enviar pedidos.'));
+      } else {
+        const label = make('label', 'field-label', 'Cliente');
+        label.htmlFor = 'checkoutCliente';
+        const select = make('select', 'select-input');
+        select.id = 'checkoutCliente';
+        if (!state.checkout.clienteRef) state.checkout.clienteRef = recordId(state.records.clientes[0]);
+        state.records.clientes.forEach(cliente => {
+          const option = make('option', '', cliente.nombre || recordId(cliente));
+          option.value = recordId(cliente);
+          if (recordId(cliente) === state.checkout.clienteRef) option.selected = true;
+          select.append(option);
+        });
+        select.addEventListener('change', event => { state.checkout.clienteRef = event.target.value; });
+        checkout.append(label, select);
+        checkout.append(make('span', 'field-label', 'Método de pago'));
+        const payment = make('div', 'payment-toggle');
+        [['Efectivo', true], ['Tarjeta', false]].forEach(([labelText, value]) => {
+          const button = make('button', `payment-option${state.checkout.metodoPago === value ? ' active' : ''}`, labelText);
+          button.type = 'button';
+          button.addEventListener('click', () => { state.checkout.metodoPago = value; render(); });
+          payment.append(button);
+        });
+        checkout.append(payment);
+      }
+      const total = make('div', 'checkout-total');
+      total.append(make('span', '', 'TOTAL'), make('strong', '', money(cartGrandTotal())));
+      checkout.append(total);
+      const confirm = make('button', 'primary-button', state.checkout.submitting ? 'Enviando pedido…' : 'Confirmar pedido');
+      confirm.type = 'button';
+      confirm.disabled = state.checkout.submitting || !state.records.clientes.length;
+      confirm.addEventListener('click', submitCartOrder);
+      const keepShopping = make('button', 'secondary-button', 'Seguir comprando');
+      keepShopping.type = 'button';
+      keepShopping.style.marginTop = '10px';
+      keepShopping.addEventListener('click', () => setRoute('catalog'));
+      checkout.append(confirm, keepShopping);
+      layout.append(list, checkout);
+      page.append(layout);
     }
     function render() {
       syncNavigation(); page.replaceChildren();
       const screen = current().screen;
       if (screen === 'home') showHome();
       else if (screen === 'catalog') showCatalog();
+      else if (screen === 'cart') showCart();
       else if (screen === 'detail') showDetail();
       else if (screen === 'orders') showRecords('Pedidos', 'Registra ventas y consulta su estado.', 'pedidos');
       else if (screen === 'history') {
@@ -405,7 +701,7 @@
     async function loadCollections() {
       if (state.loading) return;
       state.loading = true; connection.classList.remove('online'); connection.textContent = 'Actualizando';
-      const refreshButton = document.getElementById('refresh'); refreshButton.disabled = true; notice.textContent = ''; render();
+      const refreshButton = document.getElementById('refresh'); refreshButton.disabled = true; setNotice(''); render();
       const results = await Promise.allSettled(modules.map(async module => {
         const response = await fetch(`${API_URL}${module.path}`);
         const data = await response.json();
@@ -422,13 +718,21 @@
       state.loading = false; refreshButton.disabled = false;
       const loaded = modules.length - unavailable.length;
       connection.classList.toggle('online', loaded > 0); connection.textContent = loaded === modules.length ? 'Conectado' : `${loaded}/${modules.length} módulos`;
-      if (unavailable.length) notice.textContent = `No se pudieron cargar: ${unavailable.join(', ')}.`;
+      if (unavailable.length) setNotice(`No se pudieron cargar: ${unavailable.join(', ')}.`);
+      if (!state.checkout.clienteRef && state.records.clientes[0]) state.checkout.clienteRef = recordId(state.records.clientes[0]);
+      state.cart = state.cart.filter(item => productById(item.productoRef)).map(item => {
+        const product = productById(item.productoRef);
+        return { ...item, precio: Number(product?.precio ?? item.precio), nombre: product?.nombre || item.nombre };
+      });
+      persistCart();
       render();
     }
     document.getElementById('menuButton').addEventListener('click', () => drawer.classList.contains('open') ? closeDrawer() : openDrawer());
     drawerScrim.addEventListener('click', closeDrawer);
     document.getElementById('refresh').addEventListener('click', loadCollections);
+    document.getElementById('cartButton').addEventListener('click', () => setRoute('cart'));
     document.addEventListener('keydown', event => { if (event.key === 'Escape') closeDrawer(); });
+    syncCartBadge();
     render(); loadCollections();
   </script>
 </body>
