@@ -155,6 +155,43 @@
     .fact span { display: block; color: var(--muted); font-size: 9px; font-weight: 800; }
     .fact strong { display: block; margin-top: 5px; font-size: 12px; }
     .empty, .loading { padding: 42px 20px; border: 1px dashed #d5cdc7; border-radius: 5px; color: var(--muted); background: #ffffff80; text-align: center; font-size: 12px; }
+    .action-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin: 0 0 12px; }
+    .record-row { cursor: default; }
+    .record-edit { padding: 6px 10px; border: 1px solid var(--line); border-radius: 4px; color: var(--wine); background: var(--paper); font-size: 10px; font-weight: 800; }
+    .profile-card { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; padding: 18px; border-radius: 6px; color: #fff; background: var(--wine); }
+    .profile-monogram { display: grid; width: 48px; height: 48px; place-items: center; border-radius: 50%; color: var(--wine); background: var(--lime); font-family: Manrope, sans-serif; font-size: 21px; font-weight: 900; }
+    .profile-name { margin: 0; font-size: 15px; font-weight: 800; }
+    .profile-caption { margin: 5px 0 0; color: #f4dde5; font-size: 9px; font-weight: 700; letter-spacing: .06em; }
+    .menu-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 62px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 5px; background: var(--paper); margin-bottom: 8px; cursor: pointer; }
+    .menu-row:hover { border-color: var(--wine); }
+    .menu-name { margin: 0; font-size: 13px; font-weight: 800; }
+    .menu-caption { margin: 4px 0 0; color: var(--muted); font-size: 11px; }
+    .menu-arrow { color: var(--wine); font-size: 22px; }
+    .tool-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-bottom: 16px; }
+    .tool-button { min-height: 42px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 5px; color: var(--ink); background: var(--paper); font-size: 10px; font-weight: 800; text-align: left; }
+    .tool-button:hover { border-color: var(--wine); color: var(--wine); }
+    .stats-panel { display: grid; gap: 8px; margin-bottom: 16px; padding: 14px; border: 1px solid var(--line); border-radius: 5px; background: var(--paper); }
+    .stats-panel p { margin: 0; font-size: 11px; color: var(--muted); }
+    .stats-panel strong { color: var(--ink); font-size: 13px; }
+    .clima-list { display: grid; gap: 6px; max-height: 220px; overflow: auto; margin-top: 10px; }
+    .clima-row { display: flex; justify-content: space-between; padding: 8px 10px; border-radius: 4px; background: var(--canvas); font-size: 11px; }
+    .editor-scrim { position: fixed; inset: 0; z-index: 40; display: none; align-items: end; justify-content: center; padding: 0; background: #17131380; }
+    .editor-scrim.open { display: flex; }
+    .editor-panel { width: min(560px, 100%); max-height: min(92vh, 900px); overflow: auto; padding: 18px 18px calc(18px + env(safe-area-inset-bottom)); border-radius: 12px 12px 0 0; background: var(--canvas); box-shadow: 0 -8px 40px #29242125; }
+    @media (min-width: 701px) { .editor-scrim { align-items: center; padding: 20px; } .editor-panel { border-radius: 8px; max-height: min(88vh, 900px); } }
+    .editor-header { display: flex; align-items: start; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+    .editor-title { margin: 4px 0 0; font-family: Manrope, sans-serif; font-size: 22px; font-weight: 800; }
+    .editor-close { width: 38px; height: 38px; border: 0; border-radius: 50%; color: var(--ink); background: var(--paper); font-size: 24px; line-height: 1; }
+    .form-field { margin-bottom: 12px; }
+    .form-input, .form-textarea { width: 100%; min-height: 42px; padding: 0 11px; border: 1px solid var(--line); border-radius: 5px; color: var(--ink); background: var(--paper); font: inherit; font-size: 12px; }
+    .form-textarea { min-height: 84px; padding-top: 10px; resize: vertical; }
+    .choice-row { display: flex; flex-wrap: wrap; gap: 6px; }
+    .choice-chip { min-height: 36px; padding: 0 11px; border: 1px solid var(--line); border-radius: 5px; color: var(--muted); background: var(--paper); font-size: 11px; font-weight: 700; }
+    .choice-chip.active { border-color: var(--wine); color: #fff; background: var(--wine); }
+    .order-line { margin-bottom: 10px; padding: 12px; border: 1px solid var(--line); border-radius: 5px; background: var(--paper); }
+    .inline-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .form-error { margin: 0 0 10px; padding: 10px 12px; border-radius: 5px; color: var(--red); background: #f8e9e8; font-size: 11px; }
+    .image-preview { width: 100%; max-height: 180px; object-fit: cover; margin-bottom: 8px; border-radius: 5px; background: #e7e1dc; }
     .mobile-tabs { display: none; }
     .drawer-scrim { display: none; }
     @keyframes rise { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: translateY(0); } }
@@ -220,16 +257,32 @@
     </section>
     <nav class="mobile-tabs" id="mobileTabs" aria-label="Secciones principales"></nav>
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <div class="editor-scrim" id="editorScrim" aria-hidden="true">
+      <div class="editor-panel" role="dialog" aria-modal="true" aria-labelledby="editorTitle">
+        <div class="editor-header">
+          <div>
+            <p class="eyebrow" id="editorKicker">NUEVO REGISTRO</p>
+            <h2 class="editor-title" id="editorTitle">Formulario</h2>
+          </div>
+          <button type="button" class="editor-close" id="editorClose" aria-label="Cerrar">×</button>
+        </div>
+        <div id="editorForm"></div>
+        <p class="form-error" id="editorError" hidden></p>
+        <button type="button" class="primary-button" id="editorSave">Registrar</button>
+        <button type="button" class="secondary-button" id="editorCancel" style="margin-top:8px;">Cancelar</button>
+      </div>
+    </div>
   </div>
   <script>
     const API_URL = 'https://prueva-1-wuwk.onrender.com';
     const modules = [
-      { key: 'productos', label: 'Productos', path: '/api/productos/productos' },
-      { key: 'categorias', label: 'Categorías', path: '/api/categorias/categorias' },
-      { key: 'clientes', label: 'Clientes', path: '/api/clientes/clientes' },
-      { key: 'pedidos', label: 'Pedidos', path: '/api/pedidos/pedidos' },
-      { key: 'creditos', label: 'Créditos', path: '/api/creditos/creditos' },
+      { key: 'productos', label: 'Productos', path: '/api/productos/productos', item: '/api/productos/producto' },
+      { key: 'categorias', label: 'Categorías', path: '/api/categorias/categorias', item: '/api/categorias/categoria' },
+      { key: 'clientes', label: 'Clientes', path: '/api/clientes/clientes', item: '/api/clientes/cliente' },
+      { key: 'pedidos', label: 'Pedidos', path: '/api/pedidos/pedidos', item: '/api/pedidos/pedido' },
+      { key: 'creditos', label: 'Créditos', path: '/api/creditos/creditos', item: '/api/creditos/credito' },
     ];
+    const moduleByKey = key => modules.find(module => module.key === key);
     const CART_STORAGE_KEY = 'chevez-mobile-cart';
     const sections = [
       { id: 'home', label: 'Inicio', icon: '⌂' },
@@ -237,12 +290,13 @@
       { id: 'cart', label: 'Carrito', icon: '🛒' },
       { id: 'orders', label: 'Pedidos', icon: '↗' },
       { id: 'history', label: 'Historial', icon: '◷' },
-      { id: 'clients', label: 'Clientes', icon: '◎' },
+      { id: 'profile', label: 'Perfil', icon: '◎' },
     ];
     const today = () => new Date().toISOString().slice(0, 10);
     function routeStackFromLocation() {
       const [screen, encodedId] = location.hash.slice(1).split('/');
       if (screen === 'detail' && encodedId) return [{ screen: 'catalog' }, { screen: 'detail', id: decodeURIComponent(encodedId) }];
+      if (screen === 'clients') return [{ screen: 'clients' }];
       if (sections.some(section => section.id === screen)) return [{ screen }];
       return [{ screen: 'home' }];
     }
@@ -269,8 +323,27 @@
       loading: false,
       cart: loadCartFromStorage(),
       checkout: { clienteRef: '', metodoPago: true, submitting: false },
+      editor: null,
+      apiStats: null,
+      clima: null,
       toastTimer: null,
     };
+    const referenceId = value => {
+      if (typeof value === 'string') return value.split('/').pop();
+      return recordId(value);
+    };
+    async function apiRequest(path, options = {}) {
+      const response = await fetch(`${API_URL}${path}`, options);
+      const text = await response.text();
+      let data = {};
+      try { data = text ? JSON.parse(text) : {}; } catch { data = { mensaje: text }; }
+      if (!response.ok) throw new Error(data.mensaje || data.message || `Error ${response.status}`);
+      return data;
+    }
+    function openExport(path, label) {
+      window.open(`${API_URL}${path}`, '_blank', 'noopener');
+      showToast(label || 'Descarga iniciada');
+    }
     const current = () => state.stack[state.stack.length - 1];
     const recordId = record => String(record?.id || record?._id || '');
     const money = value => new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN', maximumFractionDigits: 0 }).format(Number(value) || 0);
@@ -320,7 +393,7 @@
     function canAddProduct(record, extra = 1) {
       if (record?.estado === false) return { ok: false, message: 'Este producto está inactivo.' };
       const stock = Number(record?.stock);
-      if (!Number.isFinite(stock) || stock <= 0) return { ok: true };
+      if (!Number.isFinite(stock) || stock <= 0) return { ok: false, message: 'Sin existencias disponibles.' };
       const existing = state.cart.find(item => item.productoRef === recordId(record));
       const nextQty = (existing?.cantidad || 0) + extra;
       if (nextQty > stock) return { ok: false, message: `Solo hay ${stock} disponibles.` };
@@ -376,6 +449,17 @@
       state.cart = [];
       persistCart();
     }
+    function validateCartStock() {
+      for (const item of state.cart) {
+        const product = productById(item.productoRef);
+        const qty = Number(item.cantidad) || 0;
+        const stock = Number(product?.stock);
+        if (!product) return { ok: false, message: 'Hay productos en el carrito que ya no existen.' };
+        if (product.estado === false) return { ok: false, message: `"${product.nombre}" está inactivo.` };
+        if (!Number.isFinite(stock) || qty > stock) return { ok: false, message: `Stock insuficiente para "${product.nombre}". Disponible: ${stock}.` };
+      }
+      return { ok: true };
+    }
     async function submitCartOrder() {
       if (state.checkout.submitting) return;
       if (!state.cart.length) {
@@ -384,6 +468,11 @@
       }
       if (!state.checkout.clienteRef) {
         setNotice('Selecciona un cliente para registrar el pedido.');
+        return;
+      }
+      const stockCheck = validateCartStock();
+      if (!stockCheck.ok) {
+        setNotice(stockCheck.message);
         return;
       }
       const detalles = state.cart.map(item => ({
@@ -424,6 +513,337 @@
         render();
       }
     }
+    function createForm(entity, record) {
+      const records = state.records;
+      if (record) {
+        const form = { ...record, imageFile: null };
+        ['clienteRef', 'productoRef', 'categoriaRef'].forEach(key => {
+          if (form[key]) form[key] = referenceId(form[key]);
+        });
+        if (Array.isArray(form.detalles)) {
+          form.detalles = form.detalles.map(row => ({ ...row, productoRef: referenceId(row.productoRef) }));
+        }
+        if (Array.isArray(form.abonos)) form.abonos = form.abonos.map(row => ({ ...row }));
+        return form;
+      }
+      const defaults = {
+        categorias: { nombre: '', descripcion: '', imageFile: null },
+        clientes: { nombre: '', telefono: '', direccion: '', estado: true },
+        productos: {
+          nombre: '', descripcion: '', precio: '', stock: '', categoriaRef: recordId(records.categorias[0] || {}), estado: true, imageFile: null,
+        },
+        pedidos: {
+          clienteRef: recordId(records.clientes[0] || {}), fecha: today(), estado: false, metodoPago: true,
+          detalles: [{ productoRef: recordId(records.productos[0] || {}), cantidad: '1', precio: records.productos[0]?.precio || '' }],
+        },
+        creditos: {
+          clienteRef: recordId(records.clientes[0] || {}), productoRef: recordId(records.productos[0] || {}),
+          fecha: today(), descripcion: '', montoTotal: '', saldoPendiente: '', estado: false,
+          abonos: [{ fecha: today(), monto: '' }],
+        },
+      };
+      return defaults[entity];
+    }
+    function totalForDetails(details = []) {
+      return details.reduce((sum, row) => sum + (Number(row.cantidad) || 0) * (Number(row.precio) || 0), 0);
+    }
+    function validatePedidoStock(detalles) {
+      const totals = new Map();
+      for (const row of detalles) {
+        const product = state.records.productos.find(item => recordId(item) === row.productoRef);
+        if (!product) return `Producto no encontrado en el pedido.`;
+        if (product.estado === false) return `"${product.nombre}" está inactivo.`;
+        const qty = Number(row.cantidad) || 0;
+        if (qty <= 0) return 'Cada cantidad debe ser mayor que cero.';
+        const next = (totals.get(row.productoRef) || 0) + qty;
+        totals.set(row.productoRef, next);
+        if (next > Number(product.stock)) return `Stock insuficiente para "${product.nombre}". Disponible: ${product.stock}.`;
+      }
+      return '';
+    }
+    function openEditor(entity, record = null) {
+      state.editor = { entity, record, form: createForm(entity, record), saving: false };
+      renderEditor();
+      document.getElementById('editorScrim').classList.add('open');
+      document.getElementById('editorScrim').setAttribute('aria-hidden', 'false');
+    }
+    function closeEditor() {
+      state.editor = null;
+      document.getElementById('editorScrim').classList.remove('open');
+      document.getElementById('editorScrim').setAttribute('aria-hidden', 'true');
+      document.getElementById('editorForm').replaceChildren();
+      const err = document.getElementById('editorError');
+      err.hidden = true;
+      err.textContent = '';
+    }
+    function setEditorError(message) {
+      const err = document.getElementById('editorError');
+      err.textContent = message || '';
+      err.hidden = !message;
+    }
+    function renderEditor() {
+      if (!state.editor) return;
+      const { entity, record, form } = state.editor;
+      const config = moduleByKey(entity);
+      document.getElementById('editorKicker').textContent = record ? 'ACTUALIZAR' : 'NUEVO REGISTRO';
+      document.getElementById('editorTitle').textContent = config?.label || entity;
+      document.getElementById('editorSave').textContent = state.editor.saving ? 'Guardando…' : (record ? 'Guardar cambios' : 'Registrar');
+      document.getElementById('editorSave').disabled = state.editor.saving;
+      const wrap = document.getElementById('editorForm');
+      wrap.replaceChildren();
+      const setField = (key, value) => {
+        state.editor.form[key] = value;
+        renderEditor();
+      };
+      if (entity === 'pedidos') {
+        wrap.append(buildReferenceField('Cliente', form.clienteRef, state.records.clientes, value => setField('clienteRef', value)));
+        wrap.append(buildTextField('Fecha', form.fecha, value => setField('fecha', value)));
+        wrap.append(buildBooleanField('Estado', form.estado, [['En proceso', false], ['Completado', true]], value => setField('estado', value)));
+        wrap.append(buildBooleanField('Pago', form.metodoPago, [['Efectivo', true], ['Tarjeta', false]], value => setField('metodoPago', value)));
+        (form.detalles || []).forEach((row, index) => {
+          const line = make('div', 'order-line');
+          line.append(buildReferenceField(`Producto ${index + 1}`, row.productoRef, state.records.productos, value => {
+            const product = state.records.productos.find(item => recordId(item) === value);
+            const next = [...form.detalles];
+            next[index] = { ...next[index], productoRef: value, precio: product?.precio || '' };
+            setField('detalles', next);
+          }));
+          const inline = make('div', 'inline-fields');
+          inline.append(buildTextField('Cantidad', row.cantidad, value => {
+            const next = [...form.detalles]; next[index] = { ...next[index], cantidad: value }; setField('detalles', next);
+          }, 'number'));
+          inline.append(buildTextField('Precio', row.precio, () => {}, 'number', true));
+          line.append(inline);
+          const foot = make('div', 'catalog-foot');
+          foot.append(make('strong', '', money((Number(row.cantidad) || 0) * (Number(row.precio) || 0))));
+          if ((form.detalles || []).length > 1) {
+            const remove = make('button', 'cart-remove', 'Quitar'); remove.type = 'button';
+            remove.addEventListener('click', () => setField('detalles', form.detalles.filter((_, i) => i !== index)));
+            foot.append(remove);
+          }
+          line.append(foot);
+          wrap.append(line);
+        });
+        const addLine = make('button', 'secondary-button', '+ Agregar producto'); addLine.type = 'button';
+        addLine.addEventListener('click', () => setField('detalles', [...(form.detalles || []), { productoRef: '', cantidad: '1', precio: '' }]));
+        wrap.append(addLine);
+        const total = make('div', 'checkout-total');
+        total.append(make('span', '', 'TOTAL DEL PEDIDO'), make('strong', '', money(totalForDetails(form.detalles))));
+        wrap.append(total);
+        return;
+      }
+      if (entity === 'creditos') {
+        wrap.append(buildReferenceField('Cliente', form.clienteRef, state.records.clientes, value => setField('clienteRef', value)));
+        wrap.append(buildReferenceField('Producto', form.productoRef, state.records.productos, value => setField('productoRef', value)));
+        wrap.append(buildTextField('Fecha', form.fecha, value => setField('fecha', value)));
+        wrap.append(buildTextField('Descripción', form.descripcion, value => setField('descripcion', value), 'text', false, true));
+        wrap.append(buildTextField('Monto total', form.montoTotal, value => setField('montoTotal', value), 'number'));
+        wrap.append(buildTextField('Saldo pendiente', form.saldoPendiente, value => setField('saldoPendiente', value), 'number'));
+        wrap.append(buildBooleanField('Estado', form.estado, [['Pendiente', false], ['Cancelado', true]], value => setField('estado', value)));
+        (form.abonos || []).forEach((payment, index) => {
+          const line = make('div', 'inline-fields');
+          line.append(buildTextField('Fecha abono', payment.fecha, value => {
+            const next = [...form.abonos]; next[index] = { ...next[index], fecha: value }; setField('abonos', next);
+          }));
+          line.append(buildTextField('Monto', payment.monto, value => {
+            const next = [...form.abonos]; next[index] = { ...next[index], monto: value }; setField('abonos', next);
+          }, 'number'));
+          wrap.append(line);
+        });
+        const addAbono = make('button', 'secondary-button', '+ Agregar abono'); addAbono.type = 'button';
+        addAbono.addEventListener('click', () => setField('abonos', [...(form.abonos || []), { fecha: today(), monto: '' }]));
+        wrap.append(addAbono);
+        return;
+      }
+      const fields = {
+        categorias: [['nombre', 'Nombre'], ['descripcion', 'Descripción', true]],
+        clientes: [['nombre', 'Nombre'], ['telefono', 'Teléfono'], ['direccion', 'Dirección', true]],
+        productos: [['nombre', 'Nombre'], ['descripcion', 'Descripción', true], ['precio', 'Precio'], ['stock', 'Existencias']],
+      }[entity] || [];
+      fields.forEach(([key, label, multiline]) => {
+        wrap.append(buildTextField(label, form[key], value => setField(key, value), multiline ? 'text' : (key === 'precio' || key === 'stock' ? 'number' : 'text'), false, multiline));
+      });
+      if (entity === 'productos') {
+        wrap.append(buildReferenceField('Categoría', form.categoriaRef, state.records.categorias, value => setField('categoriaRef', value)));
+        wrap.append(buildBooleanField('Estado', form.estado, [['Activo', true], ['Inactivo', false]], value => setField('estado', value)));
+      }
+      if (entity === 'clientes') {
+        wrap.append(buildBooleanField('Estado', form.estado, [['Activo', true], ['Inactivo', false]], value => setField('estado', value)));
+      }
+      if (entity === 'categorias' || entity === 'productos') {
+        const block = make('div', 'form-field');
+        block.append(make('label', 'field-label', `Imagen ${record ? '(opcional al actualizar)' : '(obligatoria)'}`));
+        const previewUrl = form.imageFile ? URL.createObjectURL(form.imageFile) : (form.imagenUrl || form.imagen);
+        if (previewUrl && validImage(previewUrl)) {
+          const img = make('img', 'image-preview'); img.src = previewUrl; block.append(img);
+        }
+        const file = make('input', 'form-input'); file.type = 'file'; file.accept = 'image/*';
+        file.addEventListener('change', () => { state.editor.form.imageFile = file.files?.[0] || null; renderEditor(); });
+        block.append(file);
+        wrap.append(block);
+      }
+    }
+    function buildTextField(label, value, onChange, type = 'text', readOnly = false, multiline = false) {
+      const field = make('div', 'form-field');
+      field.append(make('label', 'field-label', label));
+      const input = multiline ? make('textarea', 'form-textarea') : make('input', 'form-input');
+      if (!multiline) input.type = type === 'number' ? 'number' : 'text';
+      input.value = value == null ? '' : String(value);
+      input.readOnly = readOnly;
+      if (!readOnly) input.addEventListener('input', event => onChange(event.target.value));
+      field.append(input);
+      return field;
+    }
+    function buildReferenceField(label, value, options, onChange) {
+      const field = make('div', 'form-field');
+      field.append(make('label', 'field-label', label));
+      if (!options?.length) {
+        field.append(make('p', '', 'Registra primero una opción.'));
+        return field;
+      }
+      const row = make('div', 'choice-row');
+      options.forEach(option => {
+        const id = recordId(option);
+        const chip = make('button', `choice-chip${value === id ? ' active' : ''}`, option.nombre || id);
+        chip.type = 'button';
+        chip.addEventListener('click', () => onChange(id));
+        row.append(chip);
+      });
+      field.append(row);
+      return field;
+    }
+    function buildBooleanField(label, value, choices, onChange) {
+      const field = make('div', 'form-field');
+      field.append(make('label', 'field-label', label));
+      const row = make('div', 'choice-row');
+      choices.forEach(([text, choiceValue]) => {
+        const chip = make('button', `choice-chip${value === choiceValue ? ' active' : ''}`, text);
+        chip.type = 'button';
+        chip.addEventListener('click', () => onChange(choiceValue));
+        row.append(chip);
+      });
+      field.append(row);
+      return field;
+    }
+    async function saveEditor() {
+      if (!state.editor || state.editor.saving) return;
+      const { entity, record, form } = state.editor;
+      const config = moduleByKey(entity);
+      setEditorError('');
+      const multipart = entity === 'categorias' || entity === 'productos';
+      if (multipart && !record && !form.imageFile) {
+        setEditorError('Selecciona una imagen para continuar.');
+        return;
+      }
+      if (entity === 'pedidos') {
+        if (!form.clienteRef || !form.detalles?.length || form.detalles.some(row => !row.productoRef)) {
+          setEditorError('Elige un cliente y al menos un producto.');
+          return;
+        }
+        if (!record) {
+          const stockMsg = validatePedidoStock(form.detalles);
+          if (stockMsg) { setEditorError(stockMsg); return; }
+        }
+      }
+      if (entity === 'creditos' && (!form.clienteRef || !form.productoRef)) {
+        setEditorError('Elige un cliente y un producto.');
+        return;
+      }
+      state.editor.saving = true;
+      renderEditor();
+      try {
+        const payload = { ...form };
+        delete payload.imageFile;
+        delete payload.imagenUrl;
+        delete payload.imagen;
+        delete payload.id;
+        if (entity === 'pedidos') {
+          payload.detalles = payload.detalles.map(row => ({
+            ...row,
+            cantidad: Number(row.cantidad),
+            precio: Number(row.precio),
+            subtotal: (Number(row.cantidad) || 0) * (Number(row.precio) || 0),
+          }));
+          payload.total = totalForDetails(payload.detalles);
+        }
+        const path = `${config.item}${record ? `/${recordId(record)}` : ''}`;
+        const method = record ? 'PUT' : 'POST';
+        let result;
+        if (multipart) {
+          const body = new FormData();
+          Object.entries(payload).forEach(([key, value]) => {
+            if (value != null && typeof value !== 'object') body.append(key, String(value));
+          });
+          if (form.imageFile) body.append('imagen', form.imageFile);
+          result = await apiRequest(path, { method, body });
+        } else {
+          result = await apiRequest(path, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        }
+        closeEditor();
+        setNotice(result.mensaje || `${config.label} guardado correctamente.`, 'success');
+        showToast('Registro guardado');
+        await loadCollections();
+      } catch (error) {
+        setEditorError(error.message || 'No se pudo guardar el registro.');
+      } finally {
+        if (state.editor) state.editor.saving = false;
+        renderEditor();
+      }
+    }
+    async function deleteProduct(record) {
+      if (!record || !window.confirm(`¿Eliminar "${record.nombre}" del catálogo?`)) return;
+      try {
+        const result = await apiRequest(`/api/productos/producto/${recordId(record)}`, { method: 'DELETE' });
+        setNotice(result.mensaje || 'Producto eliminado.', 'success');
+        await loadCollections();
+      } catch (error) {
+        setNotice(error.message || 'No se pudo eliminar el producto.');
+      }
+    }
+    async function loadApiStats() {
+      try {
+        state.apiStats = await apiRequest('/api/estadisticas');
+        if (current().screen === 'profile') render();
+      } catch (error) {
+        setNotice(error.message || 'No se pudieron cargar las estadísticas.');
+      }
+    }
+    async function sendProductsEmail() {
+      try {
+        const result = await apiRequest('/api/productos/enviar-email');
+        setNotice(result.mensaje || 'Correo enviado.', 'success');
+        showToast('Listado enviado');
+      } catch (error) {
+        setNotice(error.message || 'No se pudo enviar el correo.');
+      }
+    }
+    async function loadClima() {
+      if (!navigator.geolocation) {
+        setNotice('Tu dispositivo no permite obtener ubicación para el clima.');
+        return;
+      }
+      navigator.geolocation.getCurrentPosition(async position => {
+        try {
+          const { latitude, longitude } = position.coords;
+          state.clima = await apiRequest(`/api/clima?lat=${latitude}&lon=${longitude}`);
+          if (current().screen === 'profile') render();
+        } catch (error) {
+          setNotice(error.message || 'No se pudo cargar el clima.');
+        }
+      }, () => setNotice('Activa la ubicación para consultar el clima.'));
+    }
+    async function searchProductsRemote(term) {
+      if (!term.trim()) { await loadCollections(); return; }
+      try {
+        const data = await apiRequest(`/api/productos/buscar?q=${encodeURIComponent(term.trim())}`);
+        if (Array.isArray(data)) {
+          state.records.productos = data;
+          if (current().screen === 'catalog' && state.catalogKind === 'productos') render();
+        }
+      } catch (error) {
+        setNotice(error.message || 'Error en la búsqueda.');
+      }
+    }
     function setRoute(screen, data = {}) {
       state.stack = [{ screen, ...data }];
       state.search = '';
@@ -456,7 +876,7 @@
     function syncNavigation() {
       document.getElementById('drawerNav').replaceChildren(...sections.map(section => navButton(section)));
       document.getElementById('mobileTabs').replaceChildren(...sections.map(section => navButton(section, true)));
-      const titles = { detail: 'Detalle de producto' };
+      const titles = { detail: 'Detalle de producto', profile: 'Perfil', clients: 'Clientes' };
       document.getElementById('currentTitle').textContent = titles[current().screen] || (sections.find(section => section.id === current().screen)?.label || 'Inicio');
     }
     function openDrawer() {
@@ -492,7 +912,7 @@
       const foot = make('div', 'catalog-foot');
       const addButton = make('button', 'cart-add-button', '+ Carrito');
       addButton.type = 'button';
-      addButton.disabled = record.estado === false;
+      addButton.disabled = record.estado === false || !(Number(record.stock) > 0);
       addButton.addEventListener('click', event => { event.stopPropagation(); addToCart(record); });
       foot.append(make('strong', 'catalog-price', money(record.precio)), addButton);
       copy.append(foot); card.append(imageWrap, copy);
@@ -519,13 +939,32 @@
         const button = make('button', `segment${state.catalogKind === key ? ' active' : ''}`, label);
         button.addEventListener('click', () => { state.catalogKind = key; state.search = ''; render(); }); segment.append(button);
       });
-      const toolbar = make('div', 'toolbar');
       const records = filteredRecords(state.catalogKind);
-      toolbar.append(make('p', '', `${records.length} ${state.catalogKind === 'productos' ? 'PRODUCTOS' : 'CATEGORÍAS'}`));
+      const actionRow = make('div', 'action-row');
+      actionRow.append(make('p', '', `${records.length} ${state.catalogKind === 'productos' ? 'PRODUCTOS' : 'CATEGORÍAS'}`));
+      const addBtn = make('button', 'primary-button', state.catalogKind === 'productos' ? '+ Producto' : '+ Categoría');
+      addBtn.type = 'button';
+      addBtn.addEventListener('click', () => openEditor(state.catalogKind));
+      actionRow.append(addBtn);
+      page.append(actionRow);
       const controls = make('div', 'toolbar-controls');
       const search = make('input', 'search'); search.type = 'search'; search.placeholder = 'Buscar en el catálogo'; search.value = state.search; search.setAttribute('aria-label', 'Buscar en el catálogo');
-      search.addEventListener('input', event => { state.search = event.target.value; updateCatalogGrid(); });
-      controls.append(search, segment); toolbar.append(controls); page.append(toolbar);
+      let searchTimer;
+      search.addEventListener('input', event => {
+        state.search = event.target.value;
+        if (state.catalogKind === 'productos') {
+          clearTimeout(searchTimer);
+          searchTimer = setTimeout(() => {
+            if (state.search.trim().length >= 2) searchProductsRemote(state.search);
+            else if (!state.search.trim()) loadCollections();
+            else updateCatalogGrid();
+          }, 350);
+        } else updateCatalogGrid();
+      });
+      controls.append(search, segment);
+      const toolbar = make('div', 'toolbar');
+      toolbar.append(controls);
+      page.append(toolbar);
       const grid = make('div', 'catalog-grid'); grid.id = 'catalogGrid';
       if (state.loading) grid.append(make('div', 'loading', 'Cargando catálogo…'));
       else if (!records.length) grid.append(empty('No hay resultados para esta búsqueda.'));
@@ -540,26 +979,95 @@
       const count = document.querySelector('.toolbar > p');
       if (count) count.textContent = `${records.length} ${state.catalogKind === 'productos' ? 'PRODUCTOS' : 'CATEGORÍAS'}`;
     }
-    function recordRow(record, key) {
+    function recordRow(record, key, editable = false) {
       let detail = record.descripcion || '';
       if (key === 'clientes') detail = `${record.telefono || 'Sin teléfono'} · ${record.direccion || 'Sin dirección'}`;
       if (key === 'pedidos') detail = `${formatDate(record.fecha)} · ${money(record.total)} · ${record.estado ? 'Completado' : 'En proceso'}`;
       if (key === 'creditos') detail = `${formatDate(record.fecha)} · Pendiente ${money(record.saldoPendiente)}`;
       const row = make('article', 'record-row'); row.append(make('span', 'record-mark', key === 'clientes' ? '◎' : key === 'creditos' ? '$' : '↗'));
-      const copy = make('div', 'record-copy'); copy.append(make('p', 'record-name', record.nombre || record.descripcion || modules.find(module => module.key === key)?.label), make('p', 'record-detail', detail)); row.append(copy); return row;
+      const copy = make('div', 'record-copy'); copy.append(make('p', 'record-name', record.nombre || record.descripcion || modules.find(module => module.key === key)?.label), make('p', 'record-detail', detail)); row.append(copy);
+      if (editable) {
+        const edit = make('button', 'record-edit', 'Editar'); edit.type = 'button';
+        edit.addEventListener('click', () => openEditor(key, record));
+        row.append(edit);
+      }
+      return row;
     }
-    function showRecords(title, subtitle, key) {
+    function showRecords(title, subtitle, key, options = {}) {
       if (title) page.append(pageHeading(key.toUpperCase(), title, subtitle));
+      if (options.createLabel) {
+        const actions = make('div', 'action-row');
+        actions.append(make('p', '', `${(state.records[key] || []).length} REGISTROS`));
+        const create = make('button', 'primary-button', options.createLabel); create.type = 'button';
+        create.addEventListener('click', () => openEditor(key));
+        actions.append(create);
+        page.append(actions);
+      }
       const toolbar = make('div', 'toolbar'); const records = filteredRecords(key);
-      toolbar.append(make('p', '', `${records.length} REGISTROS`));
+      if (!options.createLabel) toolbar.append(make('p', '', `${records.length} REGISTROS`));
       const search = make('input', 'search'); search.type = 'search'; search.placeholder = `Buscar ${title.toLocaleLowerCase()}`; search.value = state.search; search.setAttribute('aria-label', `Buscar ${title.toLocaleLowerCase()}`);
       search.addEventListener('input', event => { state.search = event.target.value; render(); const input = document.querySelector('.search'); input?.focus(); input?.setSelectionRange(state.search.length, state.search.length); });
       toolbar.append(search); page.append(toolbar);
       const list = make('div', 'record-list');
       if (state.loading) list.append(make('div', 'loading', 'Cargando registros…'));
       else if (!records.length) list.append(empty('Todavía no hay registros.'));
-      else records.forEach(record => list.append(recordRow(record, key)));
+      else records.forEach(record => list.append(recordRow(record, key, options.editable)));
       page.append(list);
+    }
+    function showProfile() {
+      page.append(pageHeading('CUENTA', 'Perfil', 'Herramientas del espacio de trabajo y administración.'));
+      const card = make('section', 'profile-card');
+      card.append(make('span', 'profile-monogram', 'C'));
+      const cardCopy = make('div');
+      cardCopy.append(make('p', 'profile-name', 'Chevez Mobile BI'), make('p', 'profile-caption', 'PANEL DE GESTIÓN'));
+      card.append(cardCopy);
+      page.append(card);
+      const clientsRow = make('button', 'menu-row'); clientsRow.type = 'button';
+      const clientsCopy = make('div');
+      clientsCopy.append(make('p', 'menu-name', 'Clientes'), make('p', 'menu-caption', `${state.records.clientes.length} registros`));
+      clientsRow.append(clientsCopy, make('span', 'menu-arrow', '›'));
+      clientsRow.addEventListener('click', () => setRoute('clients'));
+      page.append(make('p', 'field-label', 'Administración'), clientsRow);
+      const newClient = make('button', 'secondary-button', '+ Registrar cliente'); newClient.type = 'button';
+      newClient.addEventListener('click', () => openEditor('clientes'));
+      page.append(newClient);
+      page.append(make('p', 'field-label', 'Estadísticas e informes'));
+      const statsPanel = make('div', 'stats-panel');
+      if (state.apiStats) {
+        [['Productos', String(state.apiStats.total)], ['Stock total', String(state.apiStats.stockTotal)], ['Precio promedio', money(state.apiStats.promedioPrecio)]].forEach(([label, value]) => {
+          const line = make('p');
+          line.append(document.createTextNode(`${label}: `), make('strong', '', value));
+          statsPanel.append(line);
+        });
+      } else statsPanel.append(make('p', '', 'Pulsa «Actualizar estadísticas» para cargar datos del servidor.'));
+      page.append(statsPanel);
+      const tools = make('div', 'tool-grid');
+      [
+        ['Actualizar estadísticas', () => loadApiStats()],
+        ['Enviar listado por correo', () => sendProductsEmail()],
+        ['Exportar Excel', () => openExport('/api/estadisticas/excel', 'Excel')],
+        ['Exportar PDF', () => openExport('/api/estadisticas/pdf', 'PDF')],
+        ['Exportar CSV', () => openExport('/api/estadisticas/csv', 'CSV')],
+        ['Exportar JSON', () => openExport('/api/productos/json', 'JSON')],
+        ['Consultar clima', () => loadClima()],
+      ].forEach(([label, handler]) => {
+        const button = make('button', 'tool-button', label); button.type = 'button';
+        button.addEventListener('click', handler);
+        tools.append(button);
+      });
+      page.append(tools);
+      if (state.clima?.pronostico?.length) {
+        const climaBox = make('div', 'stats-panel');
+        climaBox.append(make('p', '', `Clima cerca de ${state.clima.ubicacion?.latitud?.toFixed?.(2) || '—'}, ${state.clima.ubicacion?.longitud?.toFixed?.(2) || '—'}`));
+        const list = make('div', 'clima-list');
+        state.clima.pronostico.slice(0, 8).forEach(item => {
+          const row = make('div', 'clima-row');
+          row.append(make('span', '', formatDate(item.hora)), make('span', '', `${item.temperatura} °C · lluvia ${item.probabilidad_precipitacion}%`));
+          list.append(row);
+        });
+        climaBox.append(list);
+        page.append(climaBox);
+      }
     }
     function showHome() {
       const hero = make('section', 'hero'); const copy = make('div', 'hero-copy');
@@ -594,16 +1102,22 @@
       page.append(pageHeading('CATÁLOGO / PRODUCTO', record.nombre || 'Producto', 'Ficha del inventario seleccionado.', true));
       const layout = make('div', 'detail-layout'); layout.append(createImage(record.imagenUrl || record.imagen, record.nombre || 'Imagen del producto', 'detail-image'));
       const panel = make('section', 'detail-panel'); panel.append(make('p', 'eyebrow', record.categoria?.nombre || record.categoriaRef?.nombre || 'INVENTARIO'), make('h2', '', record.nombre || 'Producto'), make('p', 'detail-description', record.descripcion || 'Sin descripción disponible.'), make('p', 'detail-price', money(record.precio)));
-      const facts = make('div', 'detail-facts'); [['EXISTENCIAS', String(record.stock ?? 0)], ['ESTADO', record.estado === false ? 'Inactivo' : 'Disponible']].forEach(([label, value]) => { const fact = make('div', 'fact'); fact.append(make('span', '', label), make('strong', '', value)); facts.append(fact); }); panel.append(facts);
+      const facts = make('div', 'detail-facts'); [['EXISTENCIAS', String(record.stock ?? 0)], ['ESTADO', record.estado === false ? 'Inactivo' : 'Disponible']].forEach(([label, value]) => { const fact = make('div', 'fact'); fact.append(make('span', '', label), make('strong', '', value)); facts.append(fact); });       panel.append(facts);
       const actions = make('div', 'detail-actions');
+      const editButton = make('button', 'secondary-button', 'Editar producto');
+      editButton.type = 'button';
+      editButton.addEventListener('click', () => openEditor('productos', record));
+      const deleteButton = make('button', 'cart-remove', 'Eliminar');
+      deleteButton.type = 'button';
+      deleteButton.addEventListener('click', () => deleteProduct(record));
       const addButton = make('button', 'primary-button', 'Agregar al carrito');
       addButton.type = 'button';
-      addButton.disabled = record.estado === false;
+      addButton.disabled = record.estado === false || !(Number(record.stock) > 0);
       addButton.addEventListener('click', () => addToCart(record));
       const viewCart = make('button', 'secondary-button', 'Ver carrito');
       viewCart.type = 'button';
       viewCart.addEventListener('click', () => setRoute('cart'));
-      actions.append(addButton, viewCart);
+      actions.append(editButton, deleteButton, addButton, viewCart);
       panel.append(actions);
       layout.append(panel); page.append(layout);
     }
@@ -690,12 +1204,24 @@
       else if (screen === 'catalog') showCatalog();
       else if (screen === 'cart') showCart();
       else if (screen === 'detail') showDetail();
-      else if (screen === 'orders') showRecords('Pedidos', 'Registra ventas y consulta su estado.', 'pedidos');
+      else if (screen === 'orders') showRecords('Pedidos', 'Registra ventas y consulta su estado.', 'pedidos', { createLabel: '+ Nuevo pedido', editable: true });
       else if (screen === 'history') {
         page.append(pageHeading('MOVIMIENTOS', 'Historial', 'Pedidos y créditos registrados.'));
         const segments = make('div', 'segments'); [['pedidos', 'Pedidos'], ['creditos', 'Créditos']].forEach(([key, label]) => { const button = make('button', `segment${state.historyKind === key ? ' active' : ''}`, label); button.addEventListener('click', () => { state.historyKind = key; state.search = ''; render(); }); segments.append(button); });
-        page.append(segments); showRecords('', '', state.historyKind);
-      } else if (screen === 'clients') showRecords('Clientes', 'Contactos guardados en el negocio.', 'clientes');
+        page.append(segments);
+        showRecords('', '', state.historyKind, {
+          createLabel: state.historyKind === 'creditos' ? '+ Crédito' : null,
+          editable: state.historyKind === 'creditos',
+        });
+      } else if (screen === 'profile') showProfile();
+      else if (screen === 'clients') {
+        const heading = pageHeading('CLIENTES', 'Clientes', 'Contactos guardados en el negocio.');
+        const back = make('button', 'text-button', '‹ Volver al perfil'); back.type = 'button';
+        back.addEventListener('click', () => setRoute('profile'));
+        heading.append(back);
+        page.append(heading);
+        showRecords('', '', 'clientes', { createLabel: '+ Nuevo cliente', editable: true });
+      }
       else showHome();
     }
     async function loadCollections() {
@@ -731,6 +1257,12 @@
     drawerScrim.addEventListener('click', closeDrawer);
     document.getElementById('refresh').addEventListener('click', loadCollections);
     document.getElementById('cartButton').addEventListener('click', () => setRoute('cart'));
+    document.getElementById('editorClose').addEventListener('click', closeEditor);
+    document.getElementById('editorCancel').addEventListener('click', closeEditor);
+    document.getElementById('editorSave').addEventListener('click', saveEditor);
+    document.getElementById('editorScrim').addEventListener('click', event => {
+      if (event.target.id === 'editorScrim') closeEditor();
+    });
     document.addEventListener('keydown', event => { if (event.key === 'Escape') closeDrawer(); });
     syncCartBadge();
     render(); loadCollections();

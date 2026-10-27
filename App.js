@@ -195,6 +195,17 @@ export default function App() {
       return;
     }
     if (entity === 'pedidos' && (!form.clienteRef || !form.detalles?.length || form.detalles.some(row => !row.productoRef))) { setError('Elige un cliente y al menos un producto.'); return; }
+    if (entity === 'pedidos' && !record) {
+      const totals = new Map();
+      for (const row of form.detalles) {
+        const product = records.productos.find(item => recordId(item) === row.productoRef);
+        if (!product) { setError('Producto no encontrado en el pedido.'); return; }
+        const qty = Number(row.cantidad) || 0;
+        const next = (totals.get(row.productoRef) || 0) + qty;
+        totals.set(row.productoRef, next);
+        if (next > Number(product.stock)) { setError(`Stock insuficiente para "${product.nombre}". Disponible: ${product.stock}.`); return; }
+      }
+    }
     if (entity === 'creditos' && (!form.clienteRef || !form.productoRef)) { setError('Elige un cliente y un producto.'); return; }
     if (entity === 'creditos' && form.abonos?.some(row => !row.fecha || Number(row.monto) <= 0)) { setError('Cada abono necesita fecha y un monto mayor que cero.'); return; }
     setSaving(true); setError('');
